@@ -36,6 +36,9 @@ export default function BlahajMap(props: {
 			const map = mapRef.current;
 			if (map == null) return;
 
+			// trigger resize maybe helps?
+			map.resize();
+
 			map.addSource("blahaj", {
 				type: "geojson",
 				data: {
