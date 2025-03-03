@@ -30,7 +30,7 @@ async function getGitHubStars() {
 				return String(
 					(
 						await axios(
-							"https://api.github.com/repos/makipony/blahaj-quest",
+							"https://api.github.com/repos/makinori/blahaj-quest",
 						)
 					).data.stargazers_count,
 				);
@@ -116,7 +116,7 @@ export default function Home(
 				{/* <HStack spacing={1}>
 					<Text fontSize={"sm"}>
 						Made by{" "}
-						<Link href="https://makipony.io" color={"white"}>
+						<Link href="https://maki.cafe" color={"white"}>
 							Maki
 						</Link>
 					</Text>
@@ -129,14 +129,14 @@ export default function Home(
 					colorScheme={"kofiBlue"}
 					color={"white"}
 					outline={"solid 2px rgba(255,255,255,0.5)"}
-					href="https://ko-fi.com/makipony"
+					href="https://ko-fi.com/maki_nori"
 				>
 					Support me
 				</Button> */}
 			</VStack>
 			<VStack spacing={1}>
 				<Link
-					href="https://github.com/makipony/blahaj-quest"
+					href="https://github.com/makinori/blahaj-quest"
 					// mt={-1.5}
 					display={"flex"}
 					flexDir={"row"}
@@ -156,7 +156,7 @@ export default function Home(
 					colorScheme={"gray"}
 					color={"black"}
 					outline={"solid 2px rgba(255,255,255,0.5)"}
-					href="https://github.com/makipony/blahaj-quest"
+					href="https://github.com/makinori/blahaj-quest"
 					overflow={"hidden"}
 				>
 					Star
@@ -176,10 +176,10 @@ export default function Home(
 				</Button>
 				{/* <Box mt={1}>
 					<GitHubButton
-						href="https://github.com/makipony/blahaj-quest"
+						href="https://github.com/makinori/blahaj-quest"
 						data-size="large"
 						data-show-count="true"
-						aria-label="Star makipony/blahaj-quest on GitHub"
+						aria-label="Star makinori/blahaj-quest on GitHub"
 					>
 						Star
 					</GitHubButton>
