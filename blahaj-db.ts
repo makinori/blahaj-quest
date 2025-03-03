@@ -1,7 +1,7 @@
 // country code, language code, product id, additional stores
 
 // find stores with
-// https://www.ikea.com/us/en/meta-data/navigation/stores-detailed.json
+// https://www.ikea.com/us/en/meta-data/informera/stores-detailed.json
 
 export interface BlahajDbStore {
 	id: string;

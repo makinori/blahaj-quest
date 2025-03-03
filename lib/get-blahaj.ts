@@ -36,7 +36,7 @@ async function getStock(country: BlahajDbCountry): Promise<BlahajStore[]> {
 		// try fetching stores from url
 		try {
 			const foundStores = await axios<BlahajDbStore[]>({
-				url: `https://www.ikea.com/${countryCode}/${languageCode}/meta-data/navigation/stores-detailed.json`,
+				url: `https://www.ikea.com/${countryCode}/${languageCode}/meta-data/informera/stores-detailed.json`,
 			});
 			stores = foundStores.data;
 		} catch (error) {}
