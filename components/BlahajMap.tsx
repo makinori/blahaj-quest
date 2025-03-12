@@ -39,6 +39,14 @@ export default function BlahajMap(props: {
 			// trigger resize maybe helps?
 			map.resize();
 
+			// when change style, sources and layers get reset
+			// transformStyle below handles this now.
+			// just exit early if we already have "blahaj" source
+
+			if (map.getSource("blahaj")) {
+				return;
+			}
+
 			map.addSource("blahaj", {
 				type: "geojson",
 				data: {
@@ -217,7 +225,27 @@ See more →
 	useEffect(() => {
 		try {
 			if (!mapRef.current.isStyleLoaded()) return;
-			mapRef.current.setStyle(MapStyleConfigs[style]);
+			mapRef.current.setStyle(MapStyleConfigs[style], {
+				transformStyle: (prev, next) => {
+					if (next.sources["blahaj"] == null) {
+						next.sources["blahaj"] = prev.sources["blahaj"];
+					}
+
+					if (!next.layers.find(l => l.id == "heatmap")) {
+						next.layers.push(
+							prev.layers.find(l => l.id == "heatmap"),
+						);
+					}
+
+					if (!next.layers.find(l => l.id == "blahaj")) {
+						next.layers.push(
+							prev.layers.find(l => l.id == "blahaj"),
+						);
+					}
+
+					return next;
+				},
+			});
 			onStyleLoad(blahajLayer, heatmapLayer);
 		} catch (error) {}
 	}, [style]);

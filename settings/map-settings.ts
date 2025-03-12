@@ -2,8 +2,9 @@ import layers from "protomaps-themes-base";
 import { create } from "zustand";
 
 export enum MapStyle {
-	// Protomaps = "Protomaps",
+	MapTiler = "MapTiler",
 	OpenStreetMap = "OpenStreetMap",
+	// Protomaps = "Protomaps",
 	// StamenWatercolor = "StamenWatercolor",
 }
 
@@ -19,7 +20,7 @@ interface MapSettings {
 export const useMapSettings = create<MapSettings>()(
 	// persist(
 	set => ({
-		style: MapStyle.OpenStreetMap,
+		style: MapStyle.MapTiler,
 		blahajLayer: true,
 		heatmapLayer: true,
 		setStyle: (style: MapStyle) => set({ style }),
@@ -42,23 +43,9 @@ if (pmWaterLayer != null) {
 }
 
 export const MapStyleConfigs: { [key in MapStyle]: any } = {
-	// Protomaps: {
-	// 	version: 8,
-	// 	glyphs: "https://cdn.protomaps.com/fonts/pbf/{fontstack}/{range}.pbf", // should self host this too
-	// 	sources: {
-	// 		protomaps: {
-	// 			type: "vector",
-	// 			// url: "pmtiles://https://build.protomaps.com/20231025.pmtiles",
-	// 			tiles: [
-	// 				"https://pmtiles.hotmilk.space/20231025/{z}/{x}/{y}.mvt",
-	// 			],
-	// 			maxzoom: 15,
-	// 			attribution:
-	// 				'<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
-	// 		},
-	// 	},
-	// 	layers: pmLayers,
-	// },
+	// https://github.com/element-hq/element-web/blob/develop/config.sample.json
+	MapTiler:
+		"https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx",
 	OpenStreetMap: {
 		version: 8,
 		name: "OpenStreetMap Mapnik raster tiles (Default)",
@@ -91,6 +78,23 @@ export const MapStyleConfigs: { [key in MapStyle]: any } = {
 		],
 		owner: "OpenStreetMap India",
 	},
+	// Protomaps: {
+	// 	version: 8,
+	// 	glyphs: "https://cdn.protomaps.com/fonts/pbf/{fontstack}/{range}.pbf", // should self host this too
+	// 	sources: {
+	// 		protomaps: {
+	// 			type: "vector",
+	// 			// url: "pmtiles://https://build.protomaps.com/20231025.pmtiles",
+	// 			tiles: [
+	// 				"https://pmtiles.hotmilk.space/20231025/{z}/{x}/{y}.mvt",
+	// 			],
+	// 			maxzoom: 15,
+	// 			attribution:
+	// 				'<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
+	// 		},
+	// 	},
+	// 	layers: pmLayers,
+	// },
 	// StamenWatercolor: {
 	// 	version: 8,
 	// 	name: "OpenStreetMap Mapnik raster tiles (Default)",
