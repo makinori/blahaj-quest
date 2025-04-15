@@ -11,14 +11,13 @@ import {
 	useBreakpointValue,
 } from "@chakra-ui/react";
 import axios from "axios";
+import * as dateFns from "date-fns";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { FaCode } from "react-icons/fa6";
 import BlahajMap from "../components/BlahajMap";
 import { GitHubIcon } from "../components/GitHubIcon";
-import { KofiIcon } from "../components/KofiIcon";
 import MapSettings from "../components/MapSettings";
 import blahajImage from "../images/full-flipped.png";
-import transHeart from "../images/trans-heart.png";
 import { BlahajData, getBlahajData } from "../lib/get-blahaj";
 import { apiCache } from "../utils/api-cache";
 
@@ -101,10 +100,15 @@ export default function Home(
 			<Text mt={-1} fontWeight={500}>
 				last updated:{" "}
 				<b>
-					{new Date(props.blahajData.updated).toLocaleString([], {
+					{/* {new Date(props.blahajData.updated).toLocaleString([], {
 						hour: "2-digit",
 						minute: "2-digit",
-					})}
+					})} */}
+					{dateFns.formatDistance(
+						new Date(props.blahajData.updated),
+						new Date(),
+						{ addSuffix: true },
+					)}
 				</b>
 			</Text>
 		</VStack>
