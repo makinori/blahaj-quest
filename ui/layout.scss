@@ -1,0 +1,27 @@
+@font-face {
+	font-family: "SN Pro";
+	src: url(/fonts/SNPro-VariableRegular.woff2) format("woff2-variations");
+	font-weight: 200 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "SN Pro";
+	src: url(/fonts/SNPro-VariableItalic.woff2) format("woff2-variations");
+	font-weight: 200 900;
+	font-style: italic;
+}
+
+* {
+	margin: 0;
+}
+
+body {
+	font-family: "SN Pro", sans-serif;
+	overflow: hidden;
+}
+
+a {
+	color: inherit;
+	text-decoration: inherit;
+}
