@@ -16,6 +16,6 @@ const (
 	ConfigGitHubRepo = "makinori/blahaj-quest"
 	ConfigGitHubURL  = "https://github.com/" + ConfigGitHubRepo
 
-	ConfigCacheJSONPath   = "./config.json"
+	ConfigCacheJSONPath   = "./cache.json"
 	ConfigCacheExpireTime = time.Hour
 )

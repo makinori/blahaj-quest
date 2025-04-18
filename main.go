@@ -62,6 +62,10 @@ func siteHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	if isDev {
+		log.Warn("in development mode")
+	}
+
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /{$}", siteHandler)
 
