@@ -1,16 +1,19 @@
 package components
 
-import "github.com/makinori/blahaj-quest/ui/render"
+import (
+	"github.com/makinori/blahaj-quest/common"
+	"github.com/makinori/blahaj-quest/ui/render"
+)
 
 templ BlahajMap() {
 	{{
-		mapStyles := []struct {
-			Key   string
-			Title string
-		}{
-			{Key: "maptiler", Title: "MapTiler"},
-			{Key: "osm", Title: "OpenStreetMap"},
-		}
+		jsID := common.UniqueHashPC(0)
+
+		render.AddHeadJS(ctx, jsID, `
+			function `+jsID+`() {
+				console.log(document.currentScript.parentElement);
+			}
+		`)
 	}}
 	<div
 		class={ render.SCSS(ctx,`
@@ -47,7 +50,7 @@ templ BlahajMap() {
 					}
 				`) }
 			>
-				for i, mapStyle := range mapStyles {
+				for i, mapStyle := range common.ConfigMapStyles {
 					<input
 						if i == 0 {
 							checked
@@ -61,7 +64,7 @@ templ BlahajMap() {
 						{ mapStyle.Title }
 					</label>
 					// divider
-					if i < len(mapStyles)-1 {
+					if i < len(common.ConfigMapStyles)-1 {
 						<div
 							class={ render.SCSS(ctx, `
 								width: 2px;
@@ -73,6 +76,7 @@ templ BlahajMap() {
 					}
 				}
 			</div>
+			@templ.JSFuncCall(jsID)
 		</div>
 	</div>
 }

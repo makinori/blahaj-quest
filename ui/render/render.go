@@ -8,8 +8,6 @@ import (
 	"github.com/makinori/blahaj-quest/common"
 
 	"github.com/a-h/templ"
-	"github.com/dtrenin7/minify/v2"
-	"github.com/dtrenin7/minify/v2/html"
 )
 
 func Render(
@@ -44,12 +42,7 @@ func Render(
 
 	// return buf.Bytes(), nil
 
-	m := minify.New()
-	m.Add("text/html", &html.Minifier{
-		KeepDocumentTags: true,
-	})
-
-	html, err := m.Bytes("text/html", buf.Bytes())
+	html, err := common.MinifyHTML(buf.Bytes())
 	if err != nil {
 		return []byte{}, errors.New("failed to minify: " + err.Error())
 	}

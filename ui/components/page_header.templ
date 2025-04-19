@@ -1,31 +1,11 @@
 package components
 
 import (
-	"fmt"
-	"time"
-
 	"github.com/makinori/blahaj-quest/blahaj"
 	"github.com/makinori/blahaj-quest/common"
 	"github.com/makinori/blahaj-quest/ui/icons"
 	"github.com/makinori/blahaj-quest/ui/render"
 )
-
-func lastUpdated(lastUpdated time.Time) string {
-	t := time.Since(lastUpdated)
-
-	h := t.Hours()
-	m := t.Minutes()
-
-	if m < 60 {
-		return fmt.Sprintf("%.0f minutes ago", m)
-	}
-
-	if h < 24 {
-		return fmt.Sprintf("%.0f hours ago", h)
-	}
-
-	return fmt.Sprintf("%.0f days ago", h/24)
-}
 
 templ PageHeader() {
 	{{
@@ -110,7 +90,7 @@ templ PageHeader() {
 			</p>
 			<p>
 				last updated: 
-				<b>{ lastUpdated(blahaj.Updated) }</b>
+				<b>{ common.LastUpdated(blahaj.Updated) }</b>
 			</p>
 		</div>
 		<div
@@ -158,8 +138,7 @@ templ PageHeader() {
 		class={ render.SCSS(ctx, `
 			width: 100%;
 			height: 8px;
-			// TODO: derive programmatically from config color
-			background-color: #307286;
+			background-color: `+common.ConfigColorDarker+`;
 		`) }
 	></div>
 }
