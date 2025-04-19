@@ -9,7 +9,6 @@ import (
 	"os"
 
 	"github.com/makinori/blahaj-quest/blahaj"
-	"github.com/makinori/blahaj-quest/common"
 	"github.com/makinori/blahaj-quest/ui"
 	"github.com/makinori/blahaj-quest/ui/pages"
 	"github.com/makinori/blahaj-quest/ui/render"
@@ -38,27 +37,16 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(dataJson)
 }
 
-type SiteData struct {
-	URL         string
-	Title       string
-	Description string
-}
-
 func siteHandler(w http.ResponseWriter, r *http.Request) {
-	data := blahaj.GetBlahajData()
-	stars := common.GetGitHubStars()
+	html, err := render.Render(context.Background(), ui.Layout, pages.MainPage)
 
-	ctx := common.ChainContextValues(
-		context.Background(),
-		map[any]any{
-			common.BlahajDataContextKey:  data,
-			common.GitHubStarsContextKey: stars,
-		},
-	)
+	if err != nil {
+		log.Error(err)
+		http.Error(w, "failed to render", http.StatusInternalServerError)
+		return
+	}
 
-	html := render.Render(ctx, ui.Layout, pages.MainPage)
-
-	w.Write([]byte(html))
+	w.Write(html)
 }
 
 func main() {

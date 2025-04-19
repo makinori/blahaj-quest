@@ -5,27 +5,10 @@ import (
 	"encoding/binary"
 	"hash/crc32"
 	"runtime"
-	"strings"
 
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
-	. "maragu.dev/gomponents"
-	. "maragu.dev/gomponents/html"
 )
-
-func Classes(v []string) Node {
-	return Class(strings.Join(v, " "))
-}
-
-func Attrs(attrs map[string]string) []Node {
-	var nodes []Node
-
-	for k, v := range attrs {
-		nodes = append(nodes, Attr(k, v))
-	}
-
-	return nodes
-}
 
 func Prepend[T any](n T, rest []T) []T {
 	return append([]T{n}, rest...)
@@ -53,8 +36,8 @@ func HashString(data string) string {
 	return HashBytes([]byte(data))
 }
 
-func UniqueHashPC() string {
-	pc, _, _, ok := runtime.Caller(0)
+func UniqueHashPC(callerSkip int) string {
+	pc, _, _, ok := runtime.Caller(callerSkip)
 	if !ok {
 		panic("failed to get unique hash")
 	}

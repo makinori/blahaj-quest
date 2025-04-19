@@ -1,35 +1,58 @@
 package render
 
 import (
+	"bytes"
 	"context"
+	"errors"
 
-	. "maragu.dev/gomponents"
+	"github.com/makinori/blahaj-quest/common"
+
+	"github.com/a-h/templ"
+	"github.com/dtrenin7/minify/v2"
+	"github.com/dtrenin7/minify/v2/html"
 )
-
-type RenderContext struct {
-	Context context.Context
-	SCSS    map[string]string
-	HeadJS  map[string]string
-	BodyJS  map[string]string
-}
 
 func Render(
 	ctx context.Context,
-	layout func(*RenderContext, ...Node) Node,
-	page func(*RenderContext) Node,
-) string {
-	ensureSass()
+	layout func(body string) templ.Component,
+	page func() templ.Component,
+) ([]byte, error) {
+	ctx = common.ChainContextValues(
+		ctx,
+		map[any]any{
+			pageSCSSKey:   make(map[string]string),
+			pageHeadJSKey: make(map[string]string),
+			pageBodyJSKey: make(map[string]string),
+		},
+	)
 
-	r := RenderContext{
-		Context: ctx,
-		SCSS:    map[string]string{},
-		HeadJS:  map[string]string{},
-		BodyJS:  map[string]string{},
+	buf := bytes.NewBuffer(nil)
+
+	err := page().Render(ctx, buf)
+	if err != nil {
+		return []byte{}, errors.New("failed to render page: " + err.Error())
 	}
 
-	html := Group{
-		layout(&r, page(&r)),
-	}.String()
+	pageHTML := buf.String()
 
-	return html
+	buf = bytes.NewBuffer(nil)
+
+	err = layout(pageHTML).Render(ctx, buf)
+	if err != nil {
+		return []byte{}, errors.New("failed to render layout: " + err.Error())
+	}
+
+	// return buf.Bytes(), nil
+
+	m := minify.New()
+	m.Add("text/html", &html.Minifier{
+		KeepDocumentTags: true,
+	})
+
+	html, err := m.Bytes("text/html", buf.Bytes())
+	if err != nil {
+		return []byte{}, errors.New("failed to minify: " + err.Error())
+	}
+
+	return html, nil
 }

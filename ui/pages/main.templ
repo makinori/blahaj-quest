@@ -1,0 +1,20 @@
+package pages
+
+import (
+	"github.com/makinori/blahaj-quest/ui/components"
+	"github.com/makinori/blahaj-quest/ui/render"
+)
+
+templ MainPage() {
+	<div
+		class={ render.SCSS(ctx, `
+			display: flex;
+			flex-direction: column;
+			width: 100vw;
+			height: 100vh;
+		`) }
+	>
+		@components.PageHeader()
+		@components.BlahajMap()
+	</div>
+}
