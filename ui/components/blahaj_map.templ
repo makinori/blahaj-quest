@@ -1,82 +1,134 @@
 package components
 
 import (
+	_ "embed"
+
 	"github.com/makinori/blahaj-quest/common"
 	"github.com/makinori/blahaj-quest/ui/render"
 )
 
-templ BlahajMap() {
-	{{
-		jsID := common.UniqueHashPC(0)
+//go:embed blahaj_map.js
+var blahajMapJS string
 
-		render.AddHeadJS(ctx, jsID, `
-			function `+jsID+`() {
-				console.log(document.currentScript.parentElement);
-			}
-		`)
+templ mapSettings() {
+	{{
+		render.DevEmbed(&blahajMapJS, "blahaj_map.js")
 	}}
+	// map settings
 	<div
 		class={ render.SCSS(ctx,`
-			background-color: #86ccfa;
+			position: absolute;
+			top: 8px;
+			left: 8px;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 8px;
+			font-size: 14px;
+		`) }
+	>
+		// map style selector
+		<div
+			class={ render.SCSS(ctx, `
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: center;
+				padding: 0 12px;
+				height: 32px;
+				background: white;
+				border-radius: 12px;
+				gap: 6px;
+
+				input, label {
+					cursor: pointer;
+				}
+			`) }
+		>
+			for i, mapStyle := range common.ConfigMapStyles {
+				<input
+					if i == 0 {
+						checked
+					}
+					type="radio"
+					id={ "map-style-" + mapStyle.Key }
+					name="map-style"
+					value={ mapStyle.Key }
+				/>
+				<label for={ "map-style-" + mapStyle.Key }>
+					{ mapStyle.Title }
+				</label>
+				// divider
+				if i < len(common.ConfigMapStyles)-1 {
+					<div
+						class={ render.SCSS(ctx, `
+							width: 2px;
+							height: 100%;
+							background-color: hsl(0, 0, 90%);
+							margin: 0 3px;
+						`) }
+					></div>
+				}
+			}
+		</div>
+		// map layer selector
+		<div
+			class={ render.SCSS(ctx, `
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				padding: 8px 12px;
+				background: white;
+				border-radius: 12px;
+				gap: 6px;
+			`) }
+		>
+			for _, mapLayer := range common.ConfigMapLayers {
+				<div
+					class={ render.SCSS(ctx, `
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						justify-content: center;
+						gap: 6px;
+					`) }
+				>
+					<input
+						type="checkbox"
+						id={ "map-layer-" + mapLayer.Key }
+						name="map-layer"
+						value={ mapLayer.Key }
+						checked
+					/>
+					<label for={ "map-layer-" + mapLayer.Key }>
+						{ mapLayer.Title }
+					</label>
+				</div>
+			}
+		</div>
+	</div>
+}
+
+var scriptHandle = templ.NewOnceHandle()
+
+templ BlahajMap() {
+	<div
+		id="map"
+		class={ render.SCSS(ctx,`
 			width: 100%;
 			height: 100%;
 			position: relative;
+			user-select: none;
+			background-color: #86ccfa;
 		`) }
 	>
-		// map settings
-		<div
-			class={ render.SCSS(ctx,`
-				position: absolute;
-				top: 8px;
-				left: 8px;
-			`) }
-		>
-			// map style selector
-			<div
-				class={ render.SCSS(ctx, `
-					display: flex;
-					flex-direction: row;
-					align-items: center;
-					justify-content: center;
-					padding: 0 12px;
-					height: 32px;
-					background: white;
-					border-radius: 12px;
-					gap: 6px;
-					font-size: 14px;
-
-					input, label {
-						cursor: pointer;
-					}
-				`) }
-			>
-				for i, mapStyle := range common.ConfigMapStyles {
-					<input
-						if i == 0 {
-							checked
-						}
-						type="radio"
-						id={ "map-style-" + mapStyle.Key }
-						name="map-style"
-						value={ mapStyle.Key }
-					/>
-					<label for={ "map-style-" + mapStyle.Key }>
-						{ mapStyle.Title }
-					</label>
-					// divider
-					if i < len(common.ConfigMapStyles)-1 {
-						<div
-							class={ render.SCSS(ctx, `
-								width: 2px;
-								height: 100%;
-								background-color: hsl(0, 0, 90%);
-								margin: 0 3px;
-							`) }
-						></div>
-					}
-				}
-			</div>
-			@templ.JSFuncCall(jsID)
-		</div>
+		@mapSettings()
 	</div>
+	@scriptHandle.Once() {
+		<script>
+			const MapStyles = {{ common.ConfigMapStyles }};
+			const MapLayers = {{ common.ConfigMapLayers }};
+		</script>
+		@templ.Raw("<script>" + blahajMapJS + "</script>")
+	}
 }

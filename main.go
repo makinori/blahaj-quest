@@ -9,6 +9,7 @@ import (
 	"os"
 
 	"github.com/makinori/blahaj-quest/blahaj"
+	"github.com/makinori/blahaj-quest/common"
 	"github.com/makinori/blahaj-quest/ui"
 	"github.com/makinori/blahaj-quest/ui/pages"
 	"github.com/makinori/blahaj-quest/ui/render"
@@ -19,8 +20,6 @@ import (
 var (
 	//go:embed public
 	staticContent embed.FS
-
-	_, isDev = os.LookupEnv("DEV")
 )
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
@@ -50,14 +49,14 @@ func siteHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	if isDev {
+	if common.ConfigInDev {
 		log.Warn("in development mode")
 	}
 
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /{$}", siteHandler)
 
-	if isDev {
+	if common.ConfigInDev {
 		http.Handle("GET /", http.FileServerFS(os.DirFS("./public")))
 	} else {
 		public, err := fs.Sub(staticContent, "public")

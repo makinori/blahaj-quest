@@ -1,6 +1,9 @@
 package common
 
-import "time"
+import (
+	"os"
+	"time"
+)
 
 const (
 	ConfigTitle = "🔍 Blåhaj Quest"
@@ -19,6 +22,8 @@ const (
 )
 
 var (
+	_, ConfigInDev = os.LookupEnv("DEV")
+
 	ConfigColor       = "#3c8ea7"
 	ConfigColorDarker = MixHexColors(ConfigColor, "#000", 0.195)
 	ConfigColorLigher = MixHexColors(ConfigColor, "#fff", 0.195)
@@ -30,4 +35,12 @@ var ConfigMapStyles = []struct {
 }{
 	{Key: "maptiler", Title: "MapTiler"},
 	{Key: "osm", Title: "OpenStreetMap"},
+}
+
+var ConfigMapLayers = []struct {
+	Key   string
+	Title string
+}{
+	{Key: "blahaj", Title: "Blåhaj"},
+	{Key: "heatmap", Title: "Heatmap"},
 }
