@@ -2,8 +2,9 @@ import layers from "protomaps-themes-base";
 import { create } from "zustand";
 
 export enum MapStyle {
-	MapTiler = "MapTiler",
+	OpenFreeMap = "OpenFreeMap",
 	OpenStreetMap = "OpenStreetMap",
+	// MapTiler = "MapTiler",
 	// Protomaps = "Protomaps",
 	// StamenWatercolor = "StamenWatercolor",
 }
@@ -20,7 +21,7 @@ interface MapSettings {
 export const useMapSettings = create<MapSettings>()(
 	// persist(
 	set => ({
-		style: MapStyle.MapTiler,
+		style: MapStyle.OpenFreeMap,
 		blahajLayer: true,
 		heatmapLayer: true,
 		setStyle: (style: MapStyle) => set({ style }),
@@ -43,9 +44,7 @@ if (pmWaterLayer != null) {
 }
 
 export const MapStyleConfigs: { [key in MapStyle]: any } = {
-	// https://github.com/element-hq/element-web/blob/develop/config.sample.json
-	MapTiler:
-		"https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx",
+	OpenFreeMap: "https://tiles.openfreemap.org/styles/liberty",
 	OpenStreetMap: {
 		version: 8,
 		name: "OpenStreetMap Mapnik raster tiles (Default)",
@@ -78,6 +77,9 @@ export const MapStyleConfigs: { [key in MapStyle]: any } = {
 		],
 		owner: "OpenStreetMap India",
 	},
+	// https://github.com/element-hq/element-web/blob/develop/config.sample.json
+	// MapTiler:
+	// 	"https://api.maptiler.com/maps/streets/style.json?key=fU3vlMsMn4Jb6dnEIFsx",
 	// Protomaps: {
 	// 	version: 8,
 	// 	glyphs: "https://cdn.protomaps.com/fonts/pbf/{fontstack}/{range}.pbf", // should self host this too

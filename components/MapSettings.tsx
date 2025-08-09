@@ -7,10 +7,30 @@ import {
 	Text,
 	VStack,
 } from "@chakra-ui/react";
-import { MapStyle, useMapSettings } from "../settings/map-settings";
+import {
+	MapStyle,
+	MapStyleConfigs,
+	useMapSettings,
+} from "../settings/map-settings";
 
 export default function MapSettings() {
 	const settings = useMapSettings();
+
+	const mapStylesKeys = Object.keys(MapStyleConfigs);
+	let mapStyleButtons: JSX.Element[] = [];
+
+	for (const key of mapStylesKeys) {
+		mapStyleButtons.push(
+			<Radio value={key}>
+				<Text fontSize={14}>{key}</Text>
+			</Radio>,
+		);
+		if (key != mapStylesKeys[mapStylesKeys.length - 1]) {
+			mapStyleButtons.push(
+				<Box borderX={"solid 1px rgba(0,0,0,0.1)"} h="32px" />,
+			);
+		}
+	}
 
 	return (
 		<>
@@ -27,15 +47,7 @@ export default function MapSettings() {
 					value={settings.style}
 					onChange={e => settings.setStyle(e as MapStyle)}
 				>
-					<HStack spacing={3}>
-						<Radio value={MapStyle.MapTiler}>
-							<Text fontSize={14}>MapTiler</Text>
-						</Radio>
-						<Box borderX={"solid 1px rgba(0,0,0,0.1)"} h="32px" />
-						<Radio value={MapStyle.OpenStreetMap}>
-							<Text fontSize={14}>OpenStreetMap</Text>
-						</Radio>
-					</HStack>
+					<HStack spacing={3}>{mapStyleButtons}</HStack>
 				</RadioGroup>
 			</Box>
 			<VStack
