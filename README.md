@@ -1,6 +1,6 @@
 # Blåhaj Quest
 
-> ⚠️ Need to rewrite eventually, it's a bit of a mess. Thinking about using SvelteKit with Tailwind
+> ⚠️ Currently rewriting this in Go https://github.com/makinori/blahaj-quest/tree/go
 
 Find all the Blåhaj!
 
