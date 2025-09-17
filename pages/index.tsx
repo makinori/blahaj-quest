@@ -18,8 +18,11 @@ import BlahajMap from "../components/BlahajMap";
 import { GitHubIcon } from "../components/GitHubIcon";
 import MapSettings from "../components/MapSettings";
 import blahajImage from "../images/full-flipped.png";
+import transHeart from "../images/trans-heart.png";
 import { BlahajData, getBlahajData } from "../lib/get-blahaj";
 import { apiCache } from "../utils/api-cache";
+import { KofiIcon } from "../components/KofiIcon";
+import { TransHeartIcon } from "../components/TransHeartIcon";
 
 async function getGitHubStars() {
 	return apiCache<string>(
@@ -115,29 +118,18 @@ export default function Home(
 	);
 
 	const Credits = (
-		<HStack mt={-1.5} mr={4} spacing={4}>
-			<VStack spacing={1.5}>
-				{/* <HStack spacing={1}>
-					<Text fontSize={"sm"}>
-						Made by{" "}
-						<Link href="https://maki.cafe" color={"white"}>
-							Maki
-						</Link>
-					</Text>
-					<Image src={transHeart.src} h={5} />
-				</HStack>
-				<Button
-					as={"a"}
-					size={"xs"}
-					leftIcon={<KofiIcon />}
-					colorScheme={"kofiBlue"}
-					color={"white"}
-					outline={"solid 2px rgba(255,255,255,0.5)"}
-					href="https://ko-fi.com/maki_nori"
-				>
-					Support me
-				</Button> */}
-			</VStack>
+		<HStack mt={-1.5} mr={2} spacing={6}>
+			<Link color="white" fontWeight={400} href="https://maki.cafe">
+				<VStack spacing={0} mt={1.5}>
+					<Text fontSize={"sm"}>made by</Text>
+					<HStack marginTop={-0.5} spacing={1}>
+						<Text fontSize={"sm"} fontWeight={700}>
+							maki
+						</Text>
+						<Image src={transHeart.src} h={5} />
+					</HStack>
+				</VStack>
+			</Link>
 			<VStack spacing={1}>
 				<Link
 					href="https://github.com/makinori/blahaj-quest"
