@@ -21,8 +21,6 @@ import blahajImage from "../images/full-flipped.png";
 import transHeart from "../images/trans-heart.png";
 import { BlahajData, getBlahajData } from "../lib/get-blahaj";
 import { apiCache } from "../utils/api-cache";
-import { KofiIcon } from "../components/KofiIcon";
-import { TransHeartIcon } from "../components/TransHeartIcon";
 
 async function getGitHubStars() {
 	return apiCache<string>(
