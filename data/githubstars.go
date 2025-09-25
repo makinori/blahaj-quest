@@ -1,10 +1,11 @@
-package common
+package data
 
 import (
 	"encoding/json"
+	"log/slog"
 	"net/http"
 
-	"github.com/charmbracelet/log"
+	"github.com/makinori/blahaj-quest/config"
 )
 
 func GetGitHubStars() int {
@@ -15,18 +16,18 @@ func GetGitHubStars() int {
 	}
 
 	req, err := http.NewRequest(
-		"GET", "https://api.github.com/repos/"+ConfigGitHubRepo, nil,
+		"GET", "https://api.github.com/repos/"+config.GitHubRepo, nil,
 	)
 
 	if err != nil {
-		log.Error("failed to make req for github stars", "err", err)
+		slog.Error("failed to make req for github stars", "err", err)
 		return -1
 	}
 
 	client := http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		log.Error("failed to get github stars", "err", err)
+		slog.Error("failed to get github stars", "err", err)
 		return -1
 	}
 	defer res.Body.Close()
@@ -37,7 +38,7 @@ func GetGitHubStars() int {
 
 	err = json.NewDecoder(res.Body).Decode(&data)
 	if err != nil {
-		log.Error("failed to decode github stars", "err", err)
+		slog.Error("failed to decode github stars", "err", err)
 		return -1
 	}
 

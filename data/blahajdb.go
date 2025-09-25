@@ -1,6 +1,6 @@
-package blahaj
+package data
 
-type BlahajDbCountry struct {
+type blahajCountry struct {
 	CountryCode      string
 	LanguageCode     string
 	ItemCode         string
@@ -10,8 +10,8 @@ type BlahajDbCountry struct {
 func c(
 	countryCode string, languageCode string, itemCode string,
 	additionalStores ...IkeaStore,
-) BlahajDbCountry {
-	return BlahajDbCountry{
+) blahajCountry {
+	return blahajCountry{
 		CountryCode:      countryCode,
 		LanguageCode:     languageCode,
 		ItemCode:         itemCode,
@@ -22,7 +22,7 @@ func c(
 // find stores with
 // https://www.ikea.com/us/en/meta-data/informera/stores-detailed.json
 
-var BlahajDb = []BlahajDbCountry{
+var BlahajDatabase = []blahajCountry{
 	// --------
 	// americas
 	// --------

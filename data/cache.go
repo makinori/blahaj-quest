@@ -1,4 +1,4 @@
-package common
+package data
 
 import (
 	"encoding/json"
@@ -6,6 +6,8 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"github.com/makinori/blahaj-quest/config"
 )
 
 var cacheMutex sync.Mutex
@@ -18,7 +20,7 @@ type cacheEntry struct {
 type cacheMap map[string]cacheEntry
 
 func getCacheMap() (cacheMap, error) {
-	cacheBytes, err := os.ReadFile(ConfigCacheJSONPath)
+	cacheBytes, err := os.ReadFile(config.CacheJSONPath)
 	if err != nil {
 		return cacheMap{}, nil // just init empty
 	}
@@ -75,7 +77,7 @@ func SetCache(key string, value any) error {
 
 	cache[key] = cacheEntry{
 		Data:   valueJson,
-		Expire: time.Now().Add(ConfigCacheExpireTime),
+		Expire: time.Now().Add(config.CacheExpireTime),
 	}
 
 	cacheData, err := json.Marshal(&cache)
@@ -83,7 +85,7 @@ func SetCache(key string, value any) error {
 		return errors.New("failed to marshal cache: " + err.Error())
 	}
 
-	err = os.WriteFile(ConfigCacheJSONPath, cacheData, 0644)
+	err = os.WriteFile(config.CacheJSONPath, cacheData, 0644)
 	if err != nil {
 		return errors.New("failed to write cache: " + err.Error())
 	}

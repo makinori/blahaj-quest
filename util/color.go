@@ -1,4 +1,4 @@
-package common
+package util
 
 import (
 	"errors"
@@ -50,6 +50,10 @@ func ParseHexColor(hexColor string) (Color, error) {
 
 func ColorToHex(color Color) string {
 	return fmt.Sprintf("#%02x%02x%02x", color.R, color.G, color.B)
+}
+
+func Lerp(a, b, t float64) float64 {
+	return a + t*(b-a)
 }
 
 func MixHexColors(aHex string, bHex string, t float64) string {

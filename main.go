@@ -1,20 +1,17 @@
 package main
 
 import (
-	"context"
 	"embed"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"net/http"
 	"os"
 
-	"github.com/makinori/blahaj-quest/blahaj"
-	"github.com/makinori/blahaj-quest/common"
+	"github.com/makinori/blahaj-quest/config"
+	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui"
-	"github.com/makinori/blahaj-quest/ui/pages"
-	"github.com/makinori/blahaj-quest/ui/render"
-
-	"github.com/charmbracelet/log"
+	"github.com/makinori/goemo"
 )
 
 var (
@@ -23,10 +20,10 @@ var (
 )
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-	dataJson, err := blahaj.GetBlahajDataJSON()
+	dataJson, err := data.GetBlahajDataJSON()
 
 	if err != nil {
-		log.Error("failed to get blahaj data json", "err", err)
+		slog.Error("failed to get blahaj data json", "err", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte{})
 		return
@@ -37,40 +34,47 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func siteHandler(w http.ResponseWriter, r *http.Request) {
-	html, err := render.Render(context.Background(), ui.Layout, pages.MainPage)
+	html, err := ui.Render()
 
 	if err != nil {
-		log.Error(err)
+		slog.Error("failed to render: " + err.Error())
 		http.Error(w, "failed to render", http.StatusInternalServerError)
 		return
 	}
 
-	w.Write(html)
+	w.Write([]byte(html))
 }
 
 func main() {
-	if common.ConfigInDev {
-		log.Warn("in development mode")
+	if config.InDev {
+		slog.Warn("in development mode")
+	}
+
+	err := goemo.InitSCSS()
+	if err != nil {
+		slog.Error("failed to load scss transpiler: " + err.Error())
+		os.Exit(1)
 	}
 
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /{$}", siteHandler)
 
-	if common.ConfigInDev {
+	if config.InDev {
 		http.Handle("GET /", http.FileServerFS(os.DirFS("./public")))
 	} else {
 		public, err := fs.Sub(staticContent, "public")
 		if err != nil {
-			log.Fatal(err)
+			slog.Error("failed to find public dir:" + err.Error())
+			os.Exit(1)
 		}
 		http.Handle("GET /", http.FileServerFS(public))
 	}
 
-	addr := fmt.Sprintf(":%d", 8080)
+	addr := fmt.Sprintf(":%s", config.Port)
 
-	log.Info("starting http server at " + addr)
-	err := http.ListenAndServe(addr, nil)
+	slog.Info("starting http server at " + addr)
+	err = http.ListenAndServe(addr, nil)
 	if err != nil {
-		log.Error("failed to start http server", "err", err)
+		slog.Error("failed to start http server", "err", err)
 	}
 }

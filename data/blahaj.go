@@ -1,9 +1,10 @@
-package blahaj
+package data
 
 import (
 	"context"
 	"encoding/json"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"slices"
@@ -12,10 +13,6 @@ import (
 	"time"
 
 	"golang.org/x/sync/semaphore"
-
-	"github.com/makinori/blahaj-quest/common"
-
-	"github.com/charmbracelet/log"
 )
 
 const maxConcurrency int = 12 // requests at a time
@@ -75,7 +72,7 @@ func getFromAPI[T any](t *T, url string, headers map[string]string) error {
 	return json.Unmarshal(body, t)
 }
 
-func getStockForCountry(country BlahajDbCountry) ([]BlahajStore, error) {
+func getStockForCountry(country blahajCountry) ([]BlahajStore, error) {
 	// get stores information
 
 	var stores []IkeaStore
@@ -125,7 +122,7 @@ func getStockForCountry(country BlahajDbCountry) ([]BlahajStore, error) {
 		} `json:"availabilities"`
 	}
 
-	stockUrl, err := url.Parse(
+	stockURL, err := url.Parse(
 		"https://api.ingka.ikea.com/cia/availabilities/ru/" + country.CountryCode,
 	)
 
@@ -133,17 +130,17 @@ func getStockForCountry(country BlahajDbCountry) ([]BlahajStore, error) {
 		return []BlahajStore{}, err
 	}
 
-	stockUrlQuery := url.Values{
+	stockURLQuery := url.Values{
 		"itemNos": []string{country.ItemCode},
 		// "expand": []string{"StoresList,Restocks,SalesLocations"},
 		"expand": []string{"StoresList"},
 	}
 
-	stockUrl.RawQuery = stockUrlQuery.Encode()
+	stockURL.RawQuery = stockURLQuery.Encode()
 
 	err = getFromAPI(
 		&stock,
-		stockUrl.String(),
+		stockURL.String(),
 		map[string]string{
 			"Accept":  "application/json;version=2",
 			"Referer": "https://www.ikea.com/",
@@ -190,7 +187,7 @@ func getStockForCountry(country BlahajDbCountry) ([]BlahajStore, error) {
 func GetBlahajData() BlahajData {
 	var data BlahajData
 
-	err := common.GetCache("blahajData", &data)
+	err := GetCache("blahajData", &data)
 	if err == nil {
 		return data
 	}
@@ -202,14 +199,14 @@ func GetBlahajData() BlahajData {
 	var sem = semaphore.NewWeighted(int64(maxConcurrency))
 	ctx := context.Background()
 
-	for _, country := range BlahajDb {
+	for _, country := range BlahajDatabase {
 		sem.Acquire(ctx, 1)
 		go func() {
 			defer sem.Release(1)
 
 			newStores, err := getStockForCountry(country)
 			if err != nil {
-				log.Warn(
+				slog.Warn(
 					"failed to get stock for country: "+
 						country.CountryCode+"/"+country.LanguageCode,
 					"err", err,
@@ -225,13 +222,13 @@ func GetBlahajData() BlahajData {
 
 	sem.Acquire(ctx, int64(maxConcurrency))
 
-	log.Infof("fetched %d stores", len(data.Data))
+	slog.Info("fetched", "stores", len(data.Data))
 
 	data.Updated = time.Now()
 
-	err = common.SetCache("blahajData", data)
+	err = SetCache("blahajData", data)
 	if err != nil {
-		log.Error(err)
+		slog.Error("failed to set cache: " + err.Error())
 	}
 
 	return data
