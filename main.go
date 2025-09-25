@@ -59,16 +59,16 @@ func main() {
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /{$}", siteHandler)
 
-	if config.InDev {
-		http.Handle("GET /", http.FileServerFS(os.DirFS("./public")))
-	} else {
-		public, err := fs.Sub(staticContent, "public")
-		if err != nil {
-			slog.Error("failed to find public dir:" + err.Error())
-			os.Exit(1)
-		}
-		http.Handle("GET /", http.FileServerFS(public))
+	// if config.InDev {
+	// 	http.Handle("GET /", http.FileServerFS(os.DirFS("./public")))
+	// } else {
+	public, err := fs.Sub(staticContent, "public")
+	if err != nil {
+		slog.Error("failed to find public dir:" + err.Error())
+		os.Exit(1)
 	}
+	http.Handle("GET /", http.FileServerFS(public))
+	// }
 
 	addr := fmt.Sprintf(":%s", config.Port)
 
