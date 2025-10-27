@@ -2,33 +2,25 @@ package data
 
 import (
 	"encoding/json"
-	"log/slog"
 	"net/http"
 
 	"github.com/makinori/blahaj-quest/config"
+	"github.com/makinori/goemo/emocache"
 )
 
-func GetGitHubStars() int {
-	var cache int
-	err := GetCache("githubStars", &cache)
-	if err == nil {
-		return cache
-	}
-
+func getGitHubStars() (int, error) {
 	req, err := http.NewRequest(
 		"GET", "https://api.github.com/repos/"+config.GitHubRepo, nil,
 	)
 
 	if err != nil {
-		slog.Error("failed to make req for github stars", "err", err)
-		return -1
+		return -1, err
 	}
 
 	client := http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		slog.Error("failed to get github stars", "err", err)
-		return -1
+		return -1, err
 	}
 	defer res.Body.Close()
 
@@ -38,11 +30,14 @@ func GetGitHubStars() int {
 
 	err = json.NewDecoder(res.Body).Decode(&data)
 	if err != nil {
-		slog.Error("failed to decode github stars", "err", err)
-		return -1
+		return -1, err
 	}
 
-	SetCache("githubStars", data.StargazersCount)
+	return data.StargazersCount, nil
+}
 
-	return data.StargazersCount
+var GitHubStars = emocache.Data[int]{
+	Key:      "githubstars",
+	CronSpec: "0 * * * *", // start of every hour,
+	Retrieve: getGitHubStars,
 }

@@ -1,5 +1,3 @@
-cache.json
+/tmp
+/cache
 blahaj-quest
-# maybe should commit?
-*_templ.go 
-tmp

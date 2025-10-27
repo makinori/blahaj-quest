@@ -10,8 +10,8 @@ import (
 	"slices"
 	"strings"
 	"sync"
-	"time"
 
+	"github.com/makinori/goemo/emocache"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -29,21 +29,16 @@ type BlahajStore struct {
 	ItemCode     string `json:"itemCode"`
 }
 
-type BlahajData struct {
-	Updated time.Time     `json:"updated"`
-	Data    []BlahajStore `json:"data"`
-}
+type BlahajData []BlahajStore
 
 // from api
 
 type IkeaStore struct {
-	ID   string
-	Name string
-	Lat  string
-	Lng  string
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Lat  string `json:"lat"`
+	Lng  string `json:"lng"`
 }
-
-// cache
 
 func getFromAPI[T any](t *T, url string, headers map[string]string) error {
 	req, err := http.NewRequest("GET", url, nil)
@@ -184,16 +179,8 @@ func getStockForCountry(country blahajCountry) ([]BlahajStore, error) {
 	return blahajStores, nil
 }
 
-func GetBlahajData() BlahajData {
+func getBlahajData() (BlahajData, error) {
 	var data BlahajData
-
-	err := GetCache("blahajData", &data)
-	if err == nil {
-		return data
-	}
-
-	// get fresh
-
 	var dataMutex sync.Mutex
 
 	var sem = semaphore.NewWeighted(int64(maxConcurrency))
@@ -215,32 +202,20 @@ func GetBlahajData() BlahajData {
 			}
 
 			dataMutex.Lock()
-			data.Data = append(data.Data, newStores...)
+			data = append(data, newStores...)
 			dataMutex.Unlock()
 		}()
 	}
 
 	sem.Acquire(ctx, int64(maxConcurrency))
 
-	slog.Info("fetched", "stores", len(data.Data))
+	slog.Info("fetched", "stores", len(data))
 
-	data.Updated = time.Now()
-
-	err = SetCache("blahajData", data)
-	if err != nil {
-		slog.Error("failed to set cache: " + err.Error())
-	}
-
-	return data
+	return data, nil
 }
 
-func GetBlahajDataJSON() ([]byte, error) {
-	data := GetBlahajData()
-
-	json, err := json.Marshal(data)
-	if err != nil {
-		return []byte{}, err
-	}
-
-	return json, nil
+var Blahaj = emocache.Data[BlahajData]{
+	Key:      "blahaj",
+	CronSpec: "0 * * * *", // start of every hour
+	Retrieve: getBlahajData,
 }

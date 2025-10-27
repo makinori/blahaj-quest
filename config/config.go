@@ -32,27 +32,27 @@ func getEnv(name, defaultValue string) string {
 }
 
 var (
-	_, InDev = os.LookupEnv("DEV")
+	_, IN_DEV = os.LookupEnv("DEV")
 
-	Port = getEnv("PORT", "8080")
+	PORT = getEnv("PORT", "8080")
 
-	Color       = "#3c8ea7"
-	ColorDarker = util.MixHexColors(Color, "#000", 0.195)
-	ColorLigher = util.MixHexColors(Color, "#fff", 0.195)
+	COLOR         = "#3c8ea7"
+	COLOR_DARKER  = util.MixHexColors(COLOR, "#000", 0.195)
+	COLOR_LIGHTER = util.MixHexColors(COLOR, "#fff", 0.195)
+
+	// MAP_STYLES = []struct {
+	// 	Key  string `json:"key"`
+	// 	Name string `json:"name"`
+	// }{
+	// 	{Key: "maptiler", Name: "MapTiler"},
+	// 	{Key: "osm", Name: "OpenStreetMap"},
+	// }
+
+	// MAP_LAYERS = []struct {
+	// 	Key  string `json:"key"`
+	// 	Name string `json:"name"`
+	// }{
+	// 	{Key: "blahaj", Name: "Blåhaj"},
+	// 	{Key: "heatmap", Name: "Heatmap"},
+	// }
 )
-
-var MapStyles = []struct {
-	Key   string
-	Title string
-}{
-	{Key: "maptiler", Title: "MapTiler"},
-	{Key: "osm", Title: "OpenStreetMap"},
-}
-
-var MapLayers = []struct {
-	Key   string
-	Title string
-}{
-	{Key: "blahaj", Title: "Blåhaj"},
-	{Key: "heatmap", Title: "Heatmap"},
-}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"encoding/json"
 	"fmt"
 	"io/fs"
 	"log/slog"
@@ -12,6 +13,7 @@ import (
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui"
 	"github.com/makinori/goemo"
+	"github.com/makinori/goemo/emohttp"
 )
 
 var (
@@ -20,8 +22,7 @@ var (
 )
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-	dataJson, err := data.GetBlahajDataJSON()
-
+	dataJSON, err := json.Marshal(data.Blahaj.Current)
 	if err != nil {
 		slog.Error("failed to get blahaj data json", "err", err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -29,28 +30,29 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(dataJson)
+	emohttp.ServeOptimized(w, r, dataJSON, ".json", true)
 }
 
 func siteHandler(w http.ResponseWriter, r *http.Request) {
 	html, err := ui.Render()
-
 	if err != nil {
 		slog.Error("failed to render: " + err.Error())
 		http.Error(w, "failed to render", http.StatusInternalServerError)
 		return
 	}
 
-	w.Write([]byte(html))
+	emohttp.ServeOptimized(w, r, []byte(html), ".html", true)
 }
 
 func main() {
-	if config.InDev {
+	if config.IN_DEV {
 		slog.Warn("in development mode")
+		emohttp.DisableContentEncodingForHTML = true
 	}
 
-	err := goemo.InitSCSS()
+	data.Init()
+
+	err := goemo.InitSCSS(nil)
 	if err != nil {
 		slog.Error("failed to load scss transpiler: " + err.Error())
 		os.Exit(1)
@@ -59,18 +61,14 @@ func main() {
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /{$}", siteHandler)
 
-	// if config.InDev {
-	// 	http.Handle("GET /", http.FileServerFS(os.DirFS("./public")))
-	// } else {
 	public, err := fs.Sub(staticContent, "public")
 	if err != nil {
 		slog.Error("failed to find public dir:" + err.Error())
 		os.Exit(1)
 	}
-	http.Handle("GET /", http.FileServerFS(public))
-	// }
+	http.HandleFunc("GET /{file...}", emohttp.FileServerOptimized(public))
 
-	addr := fmt.Sprintf(":%s", config.Port)
+	addr := fmt.Sprintf(":%s", config.PORT)
 
 	slog.Info("starting http server at " + addr)
 	err = http.ListenAndServe(addr, nil)
