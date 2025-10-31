@@ -39,20 +39,4 @@ var (
 	COLOR         = "#3c8ea7"
 	COLOR_DARKER  = util.MixHexColors(COLOR, "#000", 0.2)
 	COLOR_LIGHTER = util.MixHexColors(COLOR, "#fff", 0.1)
-
-	// MAP_STYLES = []struct {
-	// 	Key  string `json:"key"`
-	// 	Name string `json:"name"`
-	// }{
-	// 	{Key: "maptiler", Name: "MapTiler"},
-	// 	{Key: "osm", Name: "OpenStreetMap"},
-	// }
-
-	// MAP_LAYERS = []struct {
-	// 	Key  string `json:"key"`
-	// 	Name string `json:"name"`
-	// }{
-	// 	{Key: "blahaj", Name: "Blåhaj"},
-	// 	{Key: "heatmap", Name: "Heatmap"},
-	// }
 )

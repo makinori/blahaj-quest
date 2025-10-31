@@ -10,15 +10,15 @@ start:
 	-proxy.app_port=1234 \
 	-proxy.proxy_port=8080 \
 	-build.delay=10 \
-	-build.include_ext go,html,css,scss,png,jpg,gif,svg \
+	-build.include_ext go,html,css,scss,js,png,jpg,gif,svg \
 	-build.exclude_dir cache,cmd,tmp
 
-# alias ujs := update-js
-# # update javascript libraries
-# [group("dev")]
-# update-js:
-# 	curl -Lo public/js/maplibre-gl.js https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.js
-# 	curl -Lo public/css/maplibre-gl.css https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css
+alias ujs := update-js
+# update javascript libraries
+[group("dev")]
+update-js:
+	curl -Lo public/js/maplibre-gl.js https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.min.js
+	curl -Lo public/css/maplibre-gl.css https://unpkg.com/maplibre-gl@latest/dist/maplibre-gl.css
 
 alias u := update
 # git pull and docker compose up

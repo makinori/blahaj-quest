@@ -7,15 +7,20 @@ import (
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui/icons"
+	"github.com/makinori/blahaj-quest/util"
 	"github.com/makinori/goemo"
 	"github.com/makinori/goemo/emohtml"
-	"github.com/mergestat/timediff"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )
 
 func BlahajHeader(ctx context.Context) Node {
 	splitWidth := "770px"
+
+	totalBlahaj := 0
+	for i := range data.Blahaj.Current {
+		totalBlahaj += data.Blahaj.Current[i].Quantity
+	}
 
 	infoEl := emohtml.VStack(ctx,
 		emohtml.StackSCSS(`
@@ -26,15 +31,14 @@ func BlahajHeader(ctx context.Context) Node {
 			}
 		`),
 		P(
-			B(Text("430 stores")),
+			B(Text(util.FormatNumber(len(data.Blahaj.Current))+" stores")),
 			Text(" with "),
-			B(Text("24,582 blåhaj")),
+			B(Text(util.FormatNumber(totalBlahaj)+" blåhaj")),
 		),
 		P(
 			Text("last updated: "),
-			B(Text(
-				timediff.TimeDiff(data.Blahaj.Updated),
-			)),
+			// could use timediff but this function works
+			B(Text(util.LastUpdated(data.Blahaj.Updated))),
 		),
 	)
 
@@ -42,6 +46,8 @@ func BlahajHeader(ctx context.Context) Node {
 		Class(goemo.SCSS(ctx, `
 			width: 100%;
 			color: #fff;
+			z-index: 100;
+			@include large-shadow;
 		`)),
 		emohtml.HStack(ctx,
 			emohtml.StackSCSS(`
@@ -91,7 +97,7 @@ func BlahajHeader(ctx context.Context) Node {
 				`)),
 				infoEl,
 			),
-			Div(Style("flex-grow:1")),
+			Div(Style("flex-grow: 1")),
 			emohtml.VStack(ctx,
 				emohtml.StackSCSS(`
 					align-items: center;

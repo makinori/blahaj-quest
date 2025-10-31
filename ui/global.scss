@@ -17,11 +17,39 @@
 }
 
 body {
-	font-family: "SN Pro", sans-serif;
 	overflow: hidden;
+}
+
+body,
+.maplibregl-popup-content {
+	font-family: "SN Pro", sans-serif;
 }
 
 a {
 	color: inherit;
 	text-decoration: inherit;
+}
+
+@mixin large-shadow {
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+		0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.maplibregl-popup-content {
+	background: #fff;
+	color: #000;
+	font-size: 14px;
+	padding: 8px 16px;
+	box-shadow: none;
+	border-radius: 12px;
+	@include large-shadow();
+}
+
+.maplibregl-popup-content a {
+	color: #3c8ea7;
+	font-weight: bold;
+}
+
+.maplibregl-popup-close-button {
+	display: none;
 }

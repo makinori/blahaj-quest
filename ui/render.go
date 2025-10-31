@@ -6,7 +6,9 @@ import (
 	"time"
 
 	"github.com/makinori/blahaj-quest/config"
+	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/goemo"
+	"github.com/makinori/goemo/emohtml"
 
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
@@ -23,8 +25,21 @@ func Render() (string, error) {
 	)
 
 	body := Body(
-		BlahajHeader(ctx),
-		BlahajMap(),
+		emohtml.VStack(ctx,
+			emohtml.StackSCSS(`
+				gap: 0;
+				width: 100vw;
+				height: 100vh;
+			`),
+			BlahajHeader(ctx),
+			BlahajMap(ctx),
+		),
+		Script(
+			Defer(),
+			Attr("data-domain", "blahaj.quest"),
+			Attr("data-api", "https://ithelpsme.hotmilk.space/api/event"),
+			Raw(data.ItHelpsMe.Current),
+		),
 	)
 
 	pageSCSS := goemo.GetPageSCSS(ctx)
@@ -39,7 +54,7 @@ func Render() (string, error) {
 		TitleEl(Text(config.Title)),
 		Meta(
 			Name("viewport"),
-			Content("width=device-width, initial-scale=0.7"),
+			Content("width=device-width, initial-scale=0.8"),
 		),
 		Link(
 			Rel("icon"), Type("image/png"), Attr("sizes", "16x16"),
@@ -65,6 +80,8 @@ func Render() (string, error) {
 		Meta(Name("twitter:title"), Content(config.Title)),
 		Meta(Name("twitter:description"), Content(config.DESCRIPTION)),
 		Meta(Name("twitter:image"), Content(config.IMAGE_URL)),
+		Script(Src("/js/maplibre-gl.js")),
+		Link(Href("/css/maplibre-gl.css"), Rel("stylesheet")),
 		StyleEl(Raw(pageCSS)),
 	)
 

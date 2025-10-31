@@ -6,7 +6,6 @@ tool github.com/air-verse/air
 
 require (
 	github.com/makinori/goemo v0.0.0-20251031194845-b9ada0cf125c
-	github.com/mergestat/timediff v0.0.4
 	golang.org/x/sync v0.16.0
 	golang.org/x/text v0.28.0
 	maragu.dev/gomponents v1.2.0
