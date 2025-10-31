@@ -5,11 +5,14 @@ go 1.25.3
 tool github.com/air-verse/air
 
 require (
-	github.com/makinori/goemo v0.0.0-20251027170153-48a79f5fb995
+	github.com/makinori/goemo v0.0.0-20251031194845-b9ada0cf125c
+	github.com/mergestat/timediff v0.0.4
 	golang.org/x/sync v0.16.0
 	golang.org/x/text v0.28.0
 	maragu.dev/gomponents v1.2.0
 )
+
+// replace github.com/makinori/goemo => ../goemo
 
 require (
 	dario.cat/mergo v1.0.2 // indirect
@@ -33,5 +36,5 @@ require (
 	github.com/spf13/cast v1.9.2 // indirect
 	github.com/tdewolff/parse/v2 v2.8.3 // indirect
 	golang.org/x/sys v0.35.0 // indirect
-	google.golang.org/protobuf v1.36.8 // indirect
+	google.golang.org/protobuf v1.36.10 // indirect
 )

@@ -10,17 +10,17 @@ import (
 const (
 	Title = "🔍 Blåhaj Quest"
 
-	URL      = "https://blahaj.quest"
-	ImageURL = URL + "/img/open-graph-image.jpg"
+	URL       = "https://blahaj.quest"
+	IMAGE_URL = URL + "/img/open-graph-image.jpg"
 
-	Description = "Blåhaj loves you and needs you. Find them with this map so you can take good care of them ❤️"
-	Keywords    = "blahaj, shark, ikea, stores, plush, plushie, stuffie, finder, quest, search"
+	DESCRIPTION = "Blåhaj loves you and needs you. Find them with this map so you can take good care of them ❤️"
+	KEYWORDS    = "blahaj, shark, ikea, stores, plush, plushie, stuffie, finder, quest, search"
 
-	GitHubRepo = "makinori/blahaj-quest"
-	GitHubURL  = "https://github.com/" + GitHubRepo
+	GITHUB_REPO = "makinori/blahaj-quest"
+	GITHUB_URL  = "https://github.com/" + GITHUB_REPO
 
-	CacheJSONPath   = "./cache.json"
-	CacheExpireTime = time.Hour
+	CACHE_JSON_PATH   = "./cache.json"
+	CACHE_EXPIRE_TIME = time.Hour
 )
 
 func getEnv(name, defaultValue string) string {
@@ -37,8 +37,8 @@ var (
 	PORT = getEnv("PORT", "8080")
 
 	COLOR         = "#3c8ea7"
-	COLOR_DARKER  = util.MixHexColors(COLOR, "#000", 0.195)
-	COLOR_LIGHTER = util.MixHexColors(COLOR, "#fff", 0.195)
+	COLOR_DARKER  = util.MixHexColors(COLOR, "#000", 0.2)
+	COLOR_LIGHTER = util.MixHexColors(COLOR, "#fff", 0.1)
 
 	// MAP_STYLES = []struct {
 	// 	Key  string `json:"key"`

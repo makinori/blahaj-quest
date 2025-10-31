@@ -10,7 +10,7 @@ import (
 
 func getGitHubStars() (int, error) {
 	req, err := http.NewRequest(
-		"GET", "https://api.github.com/repos/"+config.GitHubRepo, nil,
+		"GET", "https://api.github.com/repos/"+config.GITHUB_REPO, nil,
 	)
 
 	if err != nil {
