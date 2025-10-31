@@ -117,8 +117,8 @@ github.com/mailru/easyjson v0.7.7 h1:UGYAvKxe3sBsEDzO8ZeWOSlIQfWFlxbzLZe7hwFURr0
 github.com/mailru/easyjson v0.7.7/go.mod h1:xzfreul335JAWq5oZzymOObrkdz5UnU4kGfJJLY9Nlc=
 github.com/makeworld-the-better-one/dither/v2 v2.4.0 h1:Az/dYXiTcwcRSe59Hzw4RI1rSnAZns+1msaCXetrMFE=
 github.com/makeworld-the-better-one/dither/v2 v2.4.0/go.mod h1:VBtN8DXO7SNtyGmLiGA7IsFeKrBkQPze1/iAeM95arc=
-github.com/makinori/goemo v0.0.0-20251031194845-b9ada0cf125c h1:9e0IxOkYzcqQhMuC7VjBtOLhNd4t3c+J+GqNmBZ2vIE=
-github.com/makinori/goemo v0.0.0-20251031194845-b9ada0cf125c/go.mod h1:D9fHXPsnQXFoL9nRwGvXk+u9AORMhSm7c1xhnyyMp5s=
+github.com/makinori/goemo v0.0.0-20251031234637-a6afa2c8a6f5 h1:SkG3dkpqbZeox2MlFhwQNmQBV2FbBVkzZ/ufawTSdJA=
+github.com/makinori/goemo v0.0.0-20251031234637-a6afa2c8a6f5/go.mod h1:D9fHXPsnQXFoL9nRwGvXk+u9AORMhSm7c1xhnyyMp5s=
 github.com/marekm4/color-extractor v1.2.1 h1:3Zb2tQsn6bITZ8MBVhc33Qn1k5/SEuZ18mrXGUqIwn0=
 github.com/marekm4/color-extractor v1.2.1/go.mod h1:90VjmiHI6M8ez9eYUaXLdcKnS+BAOp7w+NpwBdkJmpA=
 github.com/mattn/go-colorable v0.1.14 h1:9A9LHSqF/7dyVVX6g0U9cwm9pG3kP9gSzcuIPHPsaIE=

@@ -2,6 +2,7 @@ package ui
 
 import (
 	"context"
+	"net/http"
 	"strconv"
 
 	"github.com/makinori/blahaj-quest/config"
@@ -10,11 +11,12 @@ import (
 	"github.com/makinori/blahaj-quest/util"
 	"github.com/makinori/goemo"
 	"github.com/makinori/goemo/emohtml"
+	"github.com/makinori/goemo/emohttp"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )
 
-func BlahajHeader(ctx context.Context) Node {
+func BlahajHeader(ctx context.Context, r *http.Request) Node {
 	splitWidth := "770px"
 
 	totalBlahaj := 0
@@ -96,6 +98,9 @@ func BlahajHeader(ctx context.Context) Node {
 					}
 				`)),
 				infoEl,
+			),
+			Img(
+				Src("/notabot.gif?"+emohttp.NotABotURLQuery(r)),
 			),
 			Div(Style("flex-grow: 1")),
 			emohtml.VStack(ctx,

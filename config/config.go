@@ -8,9 +8,10 @@ import (
 )
 
 const (
-	Title = "🔍 Blåhaj Quest"
+	TITLE = "🔍 Blåhaj Quest"
 
-	URL       = "https://blahaj.quest"
+	DOMAIN    = "blahaj.quest"
+	URL       = "https://" + DOMAIN
 	IMAGE_URL = URL + "/img/open-graph-image.jpg"
 
 	DESCRIPTION = "Blåhaj loves you and needs you. Find them with this map so you can take good care of them ❤️"
@@ -21,6 +22,8 @@ const (
 
 	CACHE_JSON_PATH   = "./cache.json"
 	CACHE_EXPIRE_TIME = time.Hour
+
+	PLAUSIBLE_BASE_URL = "https://ithelpsme.hotmilk.space"
 )
 
 func getEnv(name, defaultValue string) string {

@@ -34,7 +34,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func siteHandler(w http.ResponseWriter, r *http.Request) {
-	html, err := ui.Render()
+	html, err := ui.Render(r)
 	if err != nil {
 		slog.Error("failed to render: " + err.Error())
 		http.Error(w, "failed to render", http.StatusInternalServerError)
@@ -48,7 +48,11 @@ func main() {
 	if config.IN_DEV {
 		slog.Warn("in development mode")
 		emohttp.DisableContentEncodingForHTML = true
+		emohttp.PlausibleDisable = true
 	}
+
+	emohttp.PlausibleDomain = config.DOMAIN
+	emohttp.PlausibleBaseURL = config.PLAUSIBLE_BASE_URL
 
 	data.Init()
 
@@ -58,8 +62,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /{$}", siteHandler)
+	http.HandleFunc("GET /api/blahaj", apiHandler)
+	http.HandleFunc("GET /notabot.gif", emohttp.HandleNotABotGif(
+		func(r *http.Request) {
+			emohttp.PlausibleEventFromNotABot(r)
+		},
+	))
 
 	public, err := fs.Sub(staticContent, "public")
 	if err != nil {
