@@ -1,0 +1,26 @@
+networks:
+    traefik:
+        external: true
+services:
+    blahaj-quest:
+        build: .
+        restart: always
+        volumes:
+            - ./cache:/cache
+        labels:
+            - traefik.enable=true
+
+            - traefik.http.routers.blahaj-quest.rule=Host("blahaj.quest") || Host("www.blahaj.quest")
+            - traefik.http.routers.blahaj-quest.entrypoints=websecure
+            - traefik.http.routers.blahaj-quest.service=blahaj-quest
+            - traefik.http.routers.blahaj-quest.tls.certresolver=le
+            - traefik.http.routers.blahaj-quest.middlewares=www-to-blahaj-quest
+            - traefik.http.services.blahaj-quest.loadbalancer.server.port=8080
+
+            - traefik.http.middlewares.www-to-blahaj-quest.redirectregex.regex=^https?://www.blahaj.quest
+            - traefik.http.middlewares.www-to-blahaj-quest.redirectregex.replacement=https://blahaj.quest$${1}
+
+            - traefik.docker.network=traefik
+        networks:
+            - default
+            - traefik
