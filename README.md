@@ -1,9 +1,9 @@
 # Blåhaj Quest
 
-Hourly BLÅHAJ finder map
+Hourly BLÅHAJ finder map https://blahaj.quest
 
-https://blahaj.quest
+Add missing stores to [blahajdb.go](/data/blahajdb.go) or [create an issue](https://github.com/makinori/blahaj-quest/issues)
 
-Now written in Go as a tiny static binary
+Written in Go as a tiny static binary
 
-Used to be written in TypeScript using Next.js and Chakra UI
+Used to be bloated: [old-next-js](https://github.com/makinori/blahaj-quest/tree/old-next-js)
