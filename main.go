@@ -75,7 +75,11 @@ func main() {
 		slog.Error("failed to find public dir:" + err.Error())
 		os.Exit(1)
 	}
-	http.HandleFunc("GET /{file...}", foxhttp.FileServerOptimized(public))
+	http.HandleFunc("GET /{file...}", foxhttp.FileServerOptimized(public,
+		func(w http.ResponseWriter, r *http.Request) {
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		},
+	))
 
 	addr := fmt.Sprintf(":%s", config.PORT)
 

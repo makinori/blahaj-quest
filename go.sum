@@ -119,6 +119,8 @@ github.com/makeworld-the-better-one/dither/v2 v2.4.0 h1:Az/dYXiTcwcRSe59Hzw4RI1r
 github.com/makeworld-the-better-one/dither/v2 v2.4.0/go.mod h1:VBtN8DXO7SNtyGmLiGA7IsFeKrBkQPze1/iAeM95arc=
 github.com/makinori/foxlib v0.0.0-20251107004036-f6804beb8296 h1:iowICDQZauqLID/rZME4ci2l+JSFZYkCQSn01KRyutk=
 github.com/makinori/foxlib v0.0.0-20251107004036-f6804beb8296/go.mod h1:g7OrkBREpbDJUM35JVMH1DMIeCvK6iPpEX8FtRGhgEs=
+github.com/makinori/foxlib v0.0.0-20251107005508-c450af69c0b5 h1:FuIvA3zErRQfg1FKWYA8Y9qDitPbOGaV0CA5BM01Jn8=
+github.com/makinori/foxlib v0.0.0-20251107005508-c450af69c0b5/go.mod h1:g7OrkBREpbDJUM35JVMH1DMIeCvK6iPpEX8FtRGhgEs=
 github.com/marekm4/color-extractor v1.2.1 h1:3Zb2tQsn6bITZ8MBVhc33Qn1k5/SEuZ18mrXGUqIwn0=
 github.com/marekm4/color-extractor v1.2.1/go.mod h1:90VjmiHI6M8ez9eYUaXLdcKnS+BAOp7w+NpwBdkJmpA=
 github.com/mattn/go-colorable v0.1.14 h1:9A9LHSqF/7dyVVX6g0U9cwm9pG3kP9gSzcuIPHPsaIE=

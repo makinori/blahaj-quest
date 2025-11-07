@@ -5,7 +5,7 @@ go 1.25.3
 tool github.com/air-verse/air
 
 require (
-	github.com/makinori/foxlib v0.0.0-20251107004036-f6804beb8296
+	github.com/makinori/foxlib v0.0.0-20251107005508-c450af69c0b5
 	golang.org/x/sync v0.16.0
 	golang.org/x/text v0.28.0
 	maragu.dev/gomponents v1.2.0
