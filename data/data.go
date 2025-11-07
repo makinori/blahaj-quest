@@ -1,9 +1,9 @@
 package data
 
-import "github.com/makinori/goemo/emocache"
+import "github.com/makinori/foxlib/foxcache"
 
 func Init() {
-	emocache.Init("cache", []emocache.DataInterface{
+	foxcache.Init("cache", []foxcache.DataInterface{
 		&Blahaj, &GitHubStars,
 	})
 }

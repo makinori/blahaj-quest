@@ -7,8 +7,8 @@ import (
 	"log/slog"
 
 	"github.com/makinori/blahaj-quest/data"
-	"github.com/makinori/goemo"
-	"github.com/makinori/goemo/emohtml"
+	"github.com/makinori/foxlib/foxcss"
+	"github.com/makinori/foxlib/foxhtml"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )
@@ -28,7 +28,7 @@ func BlahajMap(ctx context.Context) Node {
 	}
 
 	return Div(
-		Class(goemo.SCSS(ctx, `
+		Class(foxcss.Class(ctx, `
 			width: 100%;
 			height: 100%;
 			position: relative;
@@ -39,8 +39,8 @@ func BlahajMap(ctx context.Context) Node {
 			}
 		`)),
 		Div(ID("map")),
-		emohtml.VStack(ctx,
-			emohtml.StackSCSS(`
+		foxhtml.VStack(ctx,
+			foxhtml.StackSCSS(`
 				position: absolute;
 				z-index: 200;
 				top: 8px;
@@ -49,8 +49,8 @@ func BlahajMap(ctx context.Context) Node {
 				user-select: none;
 				align-items: flex-start;
 			`),
-			emohtml.HStack(ctx,
-				emohtml.StackSCSS(`
+			foxhtml.HStack(ctx,
+				foxhtml.StackSCSS(`
 					background: #fff;
 					@include large-shadow;
 					border-radius: 12px;
@@ -80,8 +80,8 @@ func BlahajMap(ctx context.Context) Node {
 					Text("OpenStreetMap"),
 				),
 			),
-			emohtml.VStack(ctx,
-				emohtml.StackSCSS(`
+			foxhtml.VStack(ctx,
+				foxhtml.StackSCSS(`
 					background: #fff;
 					@include large-shadow;
 					border-radius: 12px;

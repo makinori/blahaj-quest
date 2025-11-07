@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/makinori/goemo/emocache"
+	"github.com/makinori/foxlib/foxcache"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -214,7 +214,7 @@ func getBlahajData() (BlahajData, error) {
 	return data, nil
 }
 
-var Blahaj = emocache.Data[BlahajData]{
+var Blahaj = foxcache.Data[BlahajData]{
 	Key:      "blahaj",
 	CronSpec: "0 * * * *", // start of every hour
 	Retrieve: getBlahajData,

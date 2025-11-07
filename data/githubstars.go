@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/makinori/blahaj-quest/config"
-	"github.com/makinori/goemo/emocache"
+	"github.com/makinori/foxlib/foxcache"
 )
 
 func getGitHubStars() (int, error) {
@@ -36,7 +36,7 @@ func getGitHubStars() (int, error) {
 	return data.StargazersCount, nil
 }
 
-var GitHubStars = emocache.Data[int]{
+var GitHubStars = foxcache.Data[int]{
 	Key:      "githubstars",
 	CronSpec: "0 * * * *", // start of every hour,
 	Retrieve: getGitHubStars,

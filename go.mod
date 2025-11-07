@@ -5,13 +5,13 @@ go 1.25.3
 tool github.com/air-verse/air
 
 require (
-	github.com/makinori/goemo v0.0.0-20251031234637-a6afa2c8a6f5
+	github.com/makinori/foxlib v0.0.0-20251107004036-f6804beb8296
 	golang.org/x/sync v0.16.0
 	golang.org/x/text v0.28.0
 	maragu.dev/gomponents v1.2.0
 )
 
-// replace github.com/makinori/goemo => ../goemo
+// replace github.com/makinori/foxlib => ../foxcss
 
 require (
 	dario.cat/mergo v1.0.2 // indirect

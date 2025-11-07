@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/makinori/blahaj-quest/config"
-	"github.com/makinori/goemo"
-	"github.com/makinori/goemo/emohtml"
+	"github.com/makinori/foxlib/foxcss"
+	"github.com/makinori/foxlib/foxhtml"
 
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
@@ -18,15 +18,15 @@ import (
 var globalSCSS string
 
 func Render(r *http.Request) (string, error) {
-	ctx := goemo.InitContext(context.Background())
+	ctx := foxcss.InitContext(context.Background())
 
-	ctx = goemo.UseWords(
-		ctx, goemo.AnimalWords, time.Now().Format(time.DateOnly),
+	ctx = foxcss.UseWords(
+		ctx, foxcss.AnimalWords, time.Now().Format(time.DateOnly),
 	)
 
 	body := Body(
-		emohtml.VStack(ctx,
-			emohtml.StackSCSS(`
+		foxhtml.VStack(ctx,
+			foxhtml.StackSCSS(`
 				gap: 0;
 				width: 100vw;
 				height: 100vh;
@@ -36,9 +36,9 @@ func Render(r *http.Request) (string, error) {
 		),
 	)
 
-	pageSCSS := goemo.GetPageSCSS(ctx)
+	pageSCSS := foxcss.GetPageSCSS(ctx)
 
-	pageCSS, err := goemo.RenderSCSS(globalSCSS + "\n" + pageSCSS)
+	pageCSS, err := foxcss.RenderSCSS(globalSCSS + "\n" + pageSCSS)
 	if err != nil {
 		return "", err
 	}

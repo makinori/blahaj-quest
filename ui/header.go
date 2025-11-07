@@ -9,9 +9,9 @@ import (
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui/icons"
 	"github.com/makinori/blahaj-quest/util"
-	"github.com/makinori/goemo"
-	"github.com/makinori/goemo/emohtml"
-	"github.com/makinori/goemo/emohttp"
+	"github.com/makinori/foxlib/foxcss"
+	"github.com/makinori/foxlib/foxhtml"
+	"github.com/makinori/foxlib/foxhttp"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )
@@ -24,8 +24,8 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 		totalBlahaj += data.Blahaj.Current[i].Quantity
 	}
 
-	infoEl := emohtml.VStack(ctx,
-		emohtml.StackSCSS(`
+	infoEl := foxhtml.VStack(ctx,
+		foxhtml.StackSCSS(`
 			gap: 0;
 			font-weight: 500;
 			b {
@@ -45,14 +45,14 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 	)
 
 	return Div(
-		Class(goemo.SCSS(ctx, `
+		Class(foxcss.Class(ctx, `
 			width: 100%;
 			color: #fff;
 			z-index: 100;
 			@include large-shadow;
 		`)),
-		emohtml.HStack(ctx,
-			emohtml.StackSCSS(`
+		foxhtml.HStack(ctx,
+			foxhtml.StackSCSS(`
 				width: 100%;
 				height: 64px;
 				background-color: `+config.COLOR+`;
@@ -61,14 +61,14 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			`),
 			Img(
 				Src("/img/full-flipped.png"),
-				Class(goemo.SCSS(ctx, `
+				Class(foxcss.Class(ctx, `
 					width: 195px;
 					margin-top: -32px;
 					margin-left: -96px;
 				`)),
 			),
-			emohtml.VStack(ctx,
-				emohtml.StackSCSS(`
+			foxhtml.VStack(ctx,
+				foxhtml.StackSCSS(`
 					gap: 0;
 					align-items: center;
 					margin-left: 16px;
@@ -91,7 +91,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				),
 			),
 			Div(
-				Class(goemo.SCSS(ctx, `
+				Class(foxcss.Class(ctx, `
 					margin-left: 32px;
 					@media (width < `+splitWidth+`) {
 						display: none;
@@ -100,19 +100,19 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				infoEl,
 			),
 			Img(
-				Src("/notabot.gif?"+emohttp.NotABotURLQuery(r)),
+				Src("/notabot.gif?"+foxhttp.NotABotURLQuery(r)),
 			),
 			Div(Style("flex-grow: 1")),
-			emohtml.VStack(ctx,
-				emohtml.StackSCSS(`
+			foxhtml.VStack(ctx,
+				foxhtml.StackSCSS(`
 					align-items: center;
 					gap: 0;
 					margin-right: 24px;
 					font-size: 14px;
 				`),
 				P(Text("made by")),
-				emohtml.HStack(ctx,
-					emohtml.StackSCSS(`
+				foxhtml.HStack(ctx,
+					foxhtml.StackSCSS(`
 						align-items: center;
 						font-weight: 700;
 						gap: 4px;
@@ -123,8 +123,8 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			),
 			A(
 				Href(config.GITHUB_URL),
-				emohtml.HStack(ctx,
-					emohtml.StackSCSS(`
+				foxhtml.HStack(ctx,
+					foxhtml.StackSCSS(`
 						background-color: #fff;
 						color: #000;
 						outline: solid 2px rgba(255,255,255,0.5);
@@ -135,8 +135,8 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 						margin-right: 24px;
 						align-items: center;
 					`),
-					emohtml.HStack(ctx,
-						emohtml.StackSCSS(`
+					foxhtml.HStack(ctx,
+						foxhtml.StackSCSS(`
 							background-color: #edf2f7;
 							padding: 5px 8px;
 							border-right: solid 1px #cbd5e0;
@@ -148,7 +148,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 						Text("Star"),
 					),
 					P(
-						Class(goemo.SCSS(ctx, `
+						Class(foxcss.Class(ctx, `
 							margin-right: 8px;
 						`)),
 						Text(strconv.Itoa(data.GitHubStars.Current)),
@@ -156,8 +156,8 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				),
 			),
 		),
-		emohtml.HStack(ctx,
-			emohtml.StackSCSS(`
+		foxhtml.HStack(ctx,
+			foxhtml.StackSCSS(`
 				width: 100%;
 				height: 64px;
 				background-color: `+config.COLOR_LIGHTER+`;
@@ -169,7 +169,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			`),
 			infoEl,
 		),
-		Div(Class(goemo.SCSS(ctx, `
+		Div(Class(foxcss.Class(ctx, `
 			width: 100%;
 			height: 8px;
 			background-color: `+config.COLOR_DARKER+`;

@@ -12,8 +12,8 @@ import (
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui"
-	"github.com/makinori/goemo"
-	"github.com/makinori/goemo/emohttp"
+	"github.com/makinori/foxlib/foxcss"
+	"github.com/makinori/foxlib/foxhttp"
 )
 
 var (
@@ -30,7 +30,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	emohttp.ServeOptimized(w, r, dataJSON, ".json", true)
+	foxhttp.ServeOptimized(w, r, dataJSON, ".json", true)
 }
 
 func siteHandler(w http.ResponseWriter, r *http.Request) {
@@ -41,22 +41,22 @@ func siteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	emohttp.ServeOptimized(w, r, []byte(html), ".html", true)
+	foxhttp.ServeOptimized(w, r, []byte(html), ".html", true)
 }
 
 func main() {
 	if config.IN_DEV {
 		slog.Warn("in development mode")
-		emohttp.DisableContentEncodingForHTML = true
-		emohttp.PlausibleDisable = true
+		foxhttp.DisableContentEncodingForHTML = true
+		foxhttp.PlausibleDisable = true
 	}
 
-	emohttp.PlausibleDomain = config.DOMAIN
-	emohttp.PlausibleBaseURL = config.PLAUSIBLE_BASE_URL
+	foxhttp.PlausibleDomain = config.DOMAIN
+	foxhttp.PlausibleBaseURL = config.PLAUSIBLE_BASE_URL
 
 	data.Init()
 
-	err := goemo.InitSCSS(nil)
+	err := foxcss.InitSCSS(nil)
 	if err != nil {
 		slog.Error("failed to load scss transpiler: " + err.Error())
 		os.Exit(1)
@@ -64,9 +64,9 @@ func main() {
 
 	http.HandleFunc("GET /{$}", siteHandler)
 	http.HandleFunc("GET /api/blahaj", apiHandler)
-	http.HandleFunc("GET /notabot.gif", emohttp.HandleNotABotGif(
+	http.HandleFunc("GET /notabot.gif", foxhttp.HandleNotABotGif(
 		func(r *http.Request) {
-			emohttp.PlausibleEventFromNotABot(r)
+			foxhttp.PlausibleEventFromNotABot(r)
 		},
 	))
 
@@ -75,7 +75,7 @@ func main() {
 		slog.Error("failed to find public dir:" + err.Error())
 		os.Exit(1)
 	}
-	http.HandleFunc("GET /{file...}", emohttp.FileServerOptimized(public))
+	http.HandleFunc("GET /{file...}", foxhttp.FileServerOptimized(public))
 
 	addr := fmt.Sprintf(":%s", config.PORT)
 
