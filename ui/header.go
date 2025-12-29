@@ -25,7 +25,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 	}
 
 	infoEl := foxhtml.VStack(ctx,
-		foxhtml.StackSCSS(`
+		foxhtml.StackCSS(`
 			gap: 0;
 			font-weight: 500;
 			b {
@@ -49,10 +49,10 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			width: 100%;
 			color: #fff;
 			z-index: 100;
-			@include large-shadow;
+			`+largeBoxShadowCSS+`
 		`)),
 		foxhtml.HStack(ctx,
-			foxhtml.StackSCSS(`
+			foxhtml.StackCSS(`
 				width: 100%;
 				height: 64px;
 				background-color: `+config.COLOR+`;
@@ -68,7 +68,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				`)),
 			),
 			foxhtml.VStack(ctx,
-				foxhtml.StackSCSS(`
+				foxhtml.StackCSS(`
 					gap: 0;
 					align-items: center;
 					margin-left: 16px;
@@ -94,7 +94,9 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				Class(foxcss.Class(ctx, `
 					margin-left: 32px;
 					@media (width < `+splitWidth+`) {
-						display: none;
+						& {
+							display: none;
+						}
 					}
 				`)),
 				infoEl,
@@ -104,7 +106,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			),
 			Div(Style("flex-grow: 1")),
 			foxhtml.VStack(ctx,
-				foxhtml.StackSCSS(`
+				foxhtml.StackCSS(`
 					align-items: center;
 					gap: 0;
 					margin-right: 24px;
@@ -112,7 +114,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				`),
 				P(Text("made by")),
 				foxhtml.HStack(ctx,
-					foxhtml.StackSCSS(`
+					foxhtml.StackCSS(`
 						align-items: center;
 						font-weight: 700;
 						gap: 4px;
@@ -124,7 +126,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			A(
 				Href(config.GITHUB_URL),
 				foxhtml.HStack(ctx,
-					foxhtml.StackSCSS(`
+					foxhtml.StackCSS(`
 						background-color: #fff;
 						color: #000;
 						outline: solid 2px rgba(255,255,255,0.5);
@@ -136,7 +138,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 						align-items: center;
 					`),
 					foxhtml.HStack(ctx,
-						foxhtml.StackSCSS(`
+						foxhtml.StackCSS(`
 							background-color: #edf2f7;
 							padding: 5px 8px;
 							border-right: solid 1px #cbd5e0;
@@ -157,14 +159,16 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			),
 		),
 		foxhtml.HStack(ctx,
-			foxhtml.StackSCSS(`
+			foxhtml.StackCSS(`
 				width: 100%;
 				height: 64px;
 				background-color: `+config.COLOR_LIGHTER+`;
 				align-items: center;
 				justify-content: center;
 				@media (width >= `+splitWidth+`) {
-					display: none;
+					& {
+						display: none;
+					}
 				}
 			`),
 			infoEl,

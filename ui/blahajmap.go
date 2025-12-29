@@ -3,30 +3,14 @@ package ui
 import (
 	"context"
 	_ "embed"
-	"encoding/json"
-	"log/slog"
 
-	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/foxlib/foxcss"
 	"github.com/makinori/foxlib/foxhtml"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )
 
-var (
-	//go:embed blahajmap.js
-	blahajMapJS string
-)
-
 func BlahajMap(ctx context.Context) Node {
-	// TODO: error if more than one?
-
-	// TODO: compress this better
-	blahajData, err := json.Marshal(data.Blahaj.Current)
-	if err != nil {
-		slog.Error("failed to marshal blahaj data", "err", err)
-	}
-
 	return Div(
 		Class(foxcss.Class(ctx, `
 			width: 100%;
@@ -40,7 +24,7 @@ func BlahajMap(ctx context.Context) Node {
 		`)),
 		Div(ID("map")),
 		foxhtml.VStack(ctx,
-			foxhtml.StackSCSS(`
+			foxhtml.StackCSS(`
 				position: absolute;
 				z-index: 200;
 				top: 8px;
@@ -50,12 +34,13 @@ func BlahajMap(ctx context.Context) Node {
 				align-items: flex-start;
 			`),
 			foxhtml.HStack(ctx,
-				foxhtml.StackSCSS(`
+				foxhtml.StackCSS(`
 					background: #fff;
-					@include large-shadow;
 					border-radius: 12px;
 					font-size: 14px;
 					gap: 2px;
+
+					`+largeBoxShadowCSS+`
 
 					label {
 						padding: 8px 12px;
@@ -81,13 +66,14 @@ func BlahajMap(ctx context.Context) Node {
 				),
 			),
 			foxhtml.VStack(ctx,
-				foxhtml.StackSCSS(`
+				foxhtml.StackCSS(`
 					background: #fff;
-					@include large-shadow;
 					border-radius: 12px;
 					font-size: 14px;
 					gap: 0px;
 					padding: 8px 0;
+					
+					`+largeBoxShadowCSS+`
 
 					label {
 						padding: 2px 12px;
@@ -106,11 +92,5 @@ func BlahajMap(ctx context.Context) Node {
 				),
 			),
 		),
-		// TODO: minify?
-		Script(Raw(
-			"(async ()=>{\n"+
-				"const blahajData = "+string(blahajData)+";\n"+
-				blahajMapJS+
-				"\n})()")),
 	)
 }

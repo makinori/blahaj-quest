@@ -8,11 +8,11 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui"
-	"github.com/makinori/foxlib/foxcss"
 	"github.com/makinori/foxlib/foxhttp"
 )
 
@@ -30,7 +30,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	foxhttp.ServeOptimized(w, r, dataJSON, ".json", true)
+	foxhttp.ServeOptimized(w, r, ".json", time.Unix(0, 0), dataJSON, false)
 }
 
 func siteHandler(w http.ResponseWriter, r *http.Request) {
@@ -41,14 +41,15 @@ func siteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	foxhttp.ServeOptimized(w, r, []byte(html), ".html", true)
+	foxhttp.ServeOptimized(w, r, ".html", time.Unix(0, 0), []byte(html), false)
 }
 
 func main() {
 	if config.IN_DEV {
 		slog.Warn("in development mode")
+		slog.SetLogLoggerLevel(slog.LevelDebug)
 		foxhttp.DisableContentEncodingForHTML = true
-		foxhttp.PlausibleDisable = true
+		foxhttp.ReportWarnings = true
 	}
 
 	foxhttp.PlausibleDomain = config.DOMAIN
@@ -56,17 +57,13 @@ func main() {
 
 	data.Init()
 
-	err := foxcss.InitSCSS(nil)
-	if err != nil {
-		slog.Error("failed to load scss transpiler: " + err.Error())
-		os.Exit(1)
-	}
-
 	http.HandleFunc("GET /{$}", siteHandler)
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /notabot.gif", foxhttp.HandleNotABotGif(
 		func(r *http.Request) {
-			foxhttp.PlausibleEventFromNotABot(r)
+			if !config.IN_DEV {
+				foxhttp.PlausibleEventFromNotABot(r)
+			}
 		},
 	))
 

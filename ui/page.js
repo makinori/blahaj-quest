@@ -1,5 +1,4 @@
-const el = document.currentScript.parentElement;
-const mapEl = el.querySelector("#map");
+const mapEl = document.querySelector("#map");
 
 const mapStyleEls = document.querySelectorAll("input[name=map-style]");
 const mapLayerEls = document.querySelectorAll("input[name=map-layer]");
@@ -46,17 +45,19 @@ const markerIcons = {
 	faded: ["marker1-faded", "marker2-faded"],
 };
 
-for (const name of [...markerIcons.opaque, ...markerIcons.faded]) {
-	// TODO: promise.all
-	try {
-		const image = await map.loadImage(
-			"/img/marker-icons/48/" + name + ".png",
-		);
-		map.addImage(name, image.data);
-	} catch (error) {
-		console.error(error);
+(async () => {
+	for (const name of [...markerIcons.opaque, ...markerIcons.faded]) {
+		// TODO: promise.all
+		try {
+			const image = await map.loadImage(
+				"/img/marker-icons/48/" + name + ".png",
+			);
+			map.addImage(name, image.data);
+		} catch (error) {
+			console.error(error);
+		}
 	}
-}
+})();
 
 map.on("mouseenter", "markers", () => {
 	map.getCanvas().style.cursor = "pointer";

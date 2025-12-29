@@ -3,30 +3,54 @@ package ui
 import (
 	"context"
 	_ "embed"
+	"encoding/json"
+	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/makinori/blahaj-quest/config"
+	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/foxlib/foxcss"
 	"github.com/makinori/foxlib/foxhtml"
+	"github.com/makinori/foxlib/foxjs"
 
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )
 
-//go:embed global.scss
-var globalSCSS string
+var (
+	//go:embed font.css
+	fontCSS string
+	//go:embed page.css
+	pageCSS string
+
+	//go:embed page.js
+	pageJS string
+)
+
+func init() {
+	fontCSS = foxcss.MustMinify(fontCSS)
+	pageCSS = foxcss.MustMinify(pageCSS)
+	pageJS = foxjs.MustMinify(pageJS)
+}
 
 func Render(r *http.Request) (string, error) {
-	ctx := foxcss.InitContext(context.Background())
+	ctx := foxcss.InitContext(context.Background(), "")
 
-	ctx = foxcss.UseWords(
-		ctx, foxcss.AnimalWords, time.Now().Format(time.DateOnly),
-	)
+	err := foxcss.UseWords(ctx, hajWords, time.Now().Format(time.DateOnly))
+	if err != nil {
+		return "", err
+	}
+
+	// TODO: compress this better
+	blahajData, err := json.Marshal(data.Blahaj.Current)
+	if err != nil {
+		slog.Error("failed to marshal blahaj data", "err", err)
+	}
 
 	body := Body(
 		foxhtml.VStack(ctx,
-			foxhtml.StackSCSS(`
+			foxhtml.StackCSS(`
 				gap: 0;
 				width: 100vw;
 				height: 100vh;
@@ -34,14 +58,13 @@ func Render(r *http.Request) (string, error) {
 			BlahajHeader(ctx, r),
 			BlahajMap(ctx),
 		),
+		Script(Raw(
+			"const blahajData = "+string(blahajData)+";"+pageJS,
+		)),
 	)
 
-	pageSCSS := foxcss.GetPageSCSS(ctx)
-
-	pageCSS, err := foxcss.RenderSCSS(globalSCSS + "\n" + pageSCSS)
-	if err != nil {
-		return "", err
-	}
+	css := fontCSS + pageCSS + foxcss.GetPageCSS(ctx)
+	// os.WriteFile("test.css", []byte(css), 0644)
 
 	head := Head(
 		Meta(Charset("utf-8")),
@@ -76,7 +99,7 @@ func Render(r *http.Request) (string, error) {
 		Meta(Name("twitter:image"), Content(config.IMAGE_URL)),
 		Script(Src("/js/maplibre-gl.js")),
 		Link(Href("/css/maplibre-gl.css"), Rel("stylesheet")),
-		StyleEl(Raw(pageCSS)),
+		StyleEl(Raw(css)),
 	)
 
 	page := Doctype(
