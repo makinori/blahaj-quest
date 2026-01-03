@@ -163,7 +163,8 @@ var BlahajDatabase = []blahajCountry{
 	// oceania
 	// -------
 
+
 	c("au", "en", "10373589"), // australia
-	// new zealand, 2022
-	// only 1 country and 1 planned as of 2022-05-01
+	c("nz", "en", "10373589"), // new zealand
+	// only 2 countries as of 2023
 }
