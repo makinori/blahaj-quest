@@ -157,14 +157,13 @@ var BlahajDatabase = []blahajCountry{
 
 	c("eg", "ar", "30373588"), // egypt
 	c("ma", "ar", "30373588"), // morocco
-	// only 2 country as of 2022-05-01
+	// only 2 countries as of 2022-05-01
 
 	// -------
 	// oceania
 	// -------
 
-
 	c("au", "en", "10373589"), // australia
 	c("nz", "en", "10373589"), // new zealand
-	// only 2 countries as of 2023
+	// only 2 countries as of 2025-01-03
 }
