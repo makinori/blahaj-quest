@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/makinori/foxlib/foxcache"
+	"git.hotmilk.space/maki/foxlib/foxcache"
 	"golang.org/x/sync/semaphore"
 )
 

@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"strconv"
 
+	"git.hotmilk.space/maki/foxlib/foxcss"
+	"git.hotmilk.space/maki/foxlib/foxhtml"
+	"git.hotmilk.space/maki/foxlib/foxhttp"
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui/icons"
 	"github.com/makinori/blahaj-quest/util"
-	"github.com/makinori/foxlib/foxcss"
-	"github.com/makinori/foxlib/foxhtml"
-	"github.com/makinori/foxlib/foxhttp"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )

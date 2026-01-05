@@ -3,7 +3,7 @@ package data
 import (
 	"errors"
 
-	"github.com/makinori/foxlib/foxcache"
+	"git.hotmilk.space/maki/foxlib/foxcache"
 	"go.etcd.io/bbolt"
 )
 

@@ -10,10 +10,10 @@ import (
 	"os"
 	"time"
 
+	"git.hotmilk.space/maki/foxlib/foxhttp"
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui"
-	"github.com/makinori/foxlib/foxhttp"
 )
 
 var (

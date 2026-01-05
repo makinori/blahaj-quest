@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"git.hotmilk.space/maki/foxlib/foxcache"
 	"github.com/makinori/blahaj-quest/config"
-	"github.com/makinori/foxlib/foxcache"
 )
 
 func getGitHubStars() (int, error) {

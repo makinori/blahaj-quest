@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"time"
 
+	"git.hotmilk.space/maki/foxlib/foxcss"
+	"git.hotmilk.space/maki/foxlib/foxhtml"
+	"git.hotmilk.space/maki/foxlib/foxjs"
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
-	"github.com/makinori/foxlib/foxcss"
-	"github.com/makinori/foxlib/foxhtml"
-	"github.com/makinori/foxlib/foxjs"
 
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
