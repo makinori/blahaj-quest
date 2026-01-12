@@ -44,6 +44,17 @@ func siteHandler(w http.ResponseWriter, r *http.Request) {
 	foxhttp.ServeOptimized(w, r, ".html", time.Unix(0, 0), []byte(html), false)
 }
 
+func feedHandler(w http.ResponseWriter, r *http.Request) {
+	feed, err := ui.RenderFeed()
+	if err != nil {
+		slog.Error("failed to render feed: " + err.Error())
+		http.Error(w, "failed to render feed", http.StatusInternalServerError)
+		return
+	}
+
+	foxhttp.ServeOptimized(w, r, ".xml", time.Unix(0, 0), []byte(feed), false)
+}
+
 func main() {
 	if config.IN_DEV {
 		slog.Warn("in development mode")
@@ -58,6 +69,7 @@ func main() {
 	data.Init()
 
 	http.HandleFunc("GET /{$}", siteHandler)
+	http.HandleFunc("GET /feed.xml", feedHandler)
 	http.HandleFunc("GET /api/blahaj", apiHandler)
 	http.HandleFunc("GET /notabot.gif", foxhttp.HandleNotABotGif(
 		func(r *http.Request) {
