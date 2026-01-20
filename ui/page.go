@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"time"
 
-	"git.hotmilk.space/maki/foxlib/foxcss"
-	"git.hotmilk.space/maki/foxlib/foxhtml"
-	"git.hotmilk.space/maki/foxlib/foxjs"
+	"git.ran.cafe/maki/foxlib/foxcss"
+	"git.ran.cafe/maki/foxlib/foxhtml"
+	"git.ran.cafe/maki/foxlib/foxjs"
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 
@@ -43,7 +43,7 @@ func Render(r *http.Request) (string, error) {
 	}
 
 	// TODO: compress this better
-	blahajData, err := json.Marshal(data.Blahaj.Current)
+	blahajData, err := json.Marshal(data.Blahaj.Current())
 	if err != nil {
 		slog.Error("failed to marshal blahaj data", "err", err)
 	}

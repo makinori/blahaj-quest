@@ -4,8 +4,8 @@ import (
 	"context"
 	_ "embed"
 
-	"git.hotmilk.space/maki/foxlib/foxcss"
-	"git.hotmilk.space/maki/foxlib/foxhtml"
+	"git.ran.cafe/maki/foxlib/foxcss"
+	"git.ran.cafe/maki/foxlib/foxhtml"
 	. "maragu.dev/gomponents"
 	. "maragu.dev/gomponents/html"
 )

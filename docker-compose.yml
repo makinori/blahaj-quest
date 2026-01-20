@@ -6,7 +6,7 @@ services:
         build: .
         restart: always
         volumes:
-            - ./data.db:/data.db
+            - ./database.db:/database.db
         labels:
             - traefik.enable=true
 

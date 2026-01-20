@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	"git.hotmilk.space/maki/foxlib/foxhttp"
+	"git.ran.cafe/maki/foxlib/foxhttp"
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui"
@@ -22,7 +22,7 @@ var (
 )
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
-	dataJSON, err := json.Marshal(data.Blahaj.Current)
+	dataJSON, err := json.Marshal(data.Blahaj.Current())
 	if err != nil {
 		slog.Error("failed to get blahaj data json", "err", err)
 		w.WriteHeader(http.StatusInternalServerError)

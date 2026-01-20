@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"git.hotmilk.space/maki/foxlib/foxcache"
+	"git.ran.cafe/maki/foxlib/foxdb"
 	"github.com/makinori/blahaj-quest/config"
 )
 
@@ -36,8 +36,7 @@ func getGitHubStars() (int, error) {
 	return data.StargazersCount, nil
 }
 
-var GitHubStars = foxcache.Data[int]{
-	Key:      "githubstars",
-	CronSpec: "0 * * * *", // start of every hour,
-	Retrieve: getGitHubStars,
-}
+var GitHubStars = foxdb.CreateDataCache(
+	// start of every hour,
+	"githubstars", "0 * * * *", getGitHubStars,
+)

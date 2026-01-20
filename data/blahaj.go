@@ -11,7 +11,7 @@ import (
 	"strings"
 	"sync"
 
-	"git.hotmilk.space/maki/foxlib/foxcache"
+	"git.ran.cafe/maki/foxlib/foxdb"
 	"golang.org/x/sync/semaphore"
 )
 
@@ -214,8 +214,7 @@ func getBlahajData() (BlahajData, error) {
 	return data, nil
 }
 
-var Blahaj = foxcache.Data[BlahajData]{
-	Key:      "blahaj",
-	CronSpec: "0 * * * *", // start of every hour
-	Retrieve: getBlahajData,
-}
+var Blahaj = foxdb.CreateDataCache(
+	// start of every hour
+	"blahaj", "0 * * * *", getBlahajData,
+)

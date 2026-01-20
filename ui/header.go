@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"git.hotmilk.space/maki/foxlib/foxcss"
-	"git.hotmilk.space/maki/foxlib/foxhtml"
-	"git.hotmilk.space/maki/foxlib/foxhttp"
+	"git.ran.cafe/maki/foxlib/foxcss"
+	"git.ran.cafe/maki/foxlib/foxhtml"
+	"git.ran.cafe/maki/foxlib/foxhttp"
 	"github.com/makinori/blahaj-quest/config"
 	"github.com/makinori/blahaj-quest/data"
 	"github.com/makinori/blahaj-quest/ui/icons"
@@ -20,8 +20,8 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 	splitWidth := "770px"
 
 	totalBlahaj := 0
-	for i := range data.Blahaj.Current {
-		totalBlahaj += data.Blahaj.Current[i].Quantity
+	for i := range data.Blahaj.Current() {
+		totalBlahaj += data.Blahaj.Current()[i].Quantity
 	}
 
 	infoEl := foxhtml.VStack(ctx,
@@ -33,14 +33,14 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 			}
 		`),
 		P(
-			B(Text(util.FormatNumber(len(data.Blahaj.Current))+" stores")),
+			B(Text(util.FormatNumber(len(data.Blahaj.Current()))+" stores")),
 			Text(" with "),
 			B(Text(util.FormatNumber(totalBlahaj)+" blåhaj")),
 		),
 		P(
 			Text("last updated: "),
 			// could use timediff but this function works
-			B(Text(util.LastUpdated(data.Blahaj.Updated))),
+			B(Text(util.LastUpdated(data.Blahaj.Updated()))),
 		),
 	)
 
@@ -105,24 +105,6 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 				Src("/notabot.gif?"+foxhttp.NotABotURLQuery(r)),
 			),
 			Div(Style("flex-grow: 1")),
-			foxhtml.VStack(ctx,
-				foxhtml.StackCSS(`
-					align-items: center;
-					gap: 0;
-					margin-right: 24px;
-					font-size: 14px;
-				`),
-				P(Text("made by")),
-				foxhtml.HStack(ctx,
-					foxhtml.StackCSS(`
-						align-items: center;
-						font-weight: 700;
-						gap: 4px;
-					`),
-					A(Href("https://maki.cafe"), Text("maki")),
-					Img(Src("/img/trans-heart.png"), Height("20")),
-				),
-			),
 			A(
 				Href(config.GITHUB_URL),
 				foxhtml.HStack(ctx,
@@ -153,7 +135,7 @@ func BlahajHeader(ctx context.Context, r *http.Request) Node {
 						Class(foxcss.Class(ctx, `
 							margin-right: 8px;
 						`)),
-						Text(strconv.Itoa(data.GitHubStars.Current)),
+						Text(strconv.Itoa(data.GitHubStars.Current())),
 					),
 				),
 			),
