@@ -71,21 +71,11 @@ var BlahajDatabase = []blahajCountry{
 	// moldova has like fake ikea what
 	// bosnia and herzegovina
 	// albania
-	// lithuania has a different api
+	c("lt", "lt", "30373588"), // lithuania
 	c("si", "sl", "30373588"), // slovenia
 	// north macedonia has no ikea
-	// latvia has a different api
-	// c(
-	// 	"ee",
-	// 	"en",
-	// 	"30373588",
-	// 	IkeaStore{
-	// 		ID:   "648",
-	// 		Name: "IKEA Tallinn",
-	// 		Lat:  "59.338481",
-	// 		Lng:  "24.827531",
-	// 	},
-	// ), // estonia
+	c("lv", "lv", "30373588"), // latvia
+	c("ee", "et", "30373588"), // estonia
 	// luxembourg has no ikea yet, until 2025
 	// montenegro has another fake ikea
 	// malta
