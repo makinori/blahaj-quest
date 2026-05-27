@@ -35,7 +35,7 @@ type BlahajData []BlahajStore
 
 type IkeaStore struct {
 	ID   string `json:"id"`
-	Name string `json:"name"`
+	Name string `json:"displayNameAlternate"`
 	Lat  string `json:"lat"`
 	Lng  string `json:"lng"`
 }
